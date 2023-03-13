@@ -1,4 +1,4 @@
-const { HTTPResponse } = require("./HTTPResponse");
+const { HTTPResponse } = require("./httpResponse");
 
 class HTTPError extends Error {
     constructor(res, code, message, error) {

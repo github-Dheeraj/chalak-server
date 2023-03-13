@@ -2,8 +2,8 @@ const { PrismaClient } = require('@prisma/client')
 const validator = require("validator");
 const { OAuth2Client } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
-const HTTPError = require("../utils/HTTPError");
-const { HTTPResponse } = require("../utils/HTTPResponse");
+// const HTTPError = require("../utils/httpError");
+// const { HTTPResponse } = require("../utils/httpResponse");
 const {
     JWT_SECRET,
     GOOGLE_CLIENT_ID,
@@ -58,33 +58,7 @@ exports.createUser = async (req, res) => {
 }
 
 
-// //Add it in loginViaGoogle function
-// const initialiseSellerWithGoogle = async (googleObj) => {
-//     try {
-//         let { name, email, googleId, photoUrl } = googleObj
 
-//         let seller = await prisma.User.create({
-//             data: {
-//                 name: name,
-//                 email: email,
-
-//                 googleId: googleId,
-//                 photoUrl: photoUrl,
-
-//             }
-//         })
-//         if (seller) {
-//             console.log("this is a db res");
-//             return res.status(200).send(seller);
-
-//         } else {
-//             return res.status(500)
-//         }
-//     } catch {
-//         console.error
-//     }
-
-// }
 
 exports.loginUser = async (req, res) => {
     try {
@@ -321,70 +295,70 @@ exports.sendMessageToSeller = async (req, res) => {
 
 
 
-const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+// const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
-exports.loginViaGoogle = async (req, res) => {
+// exports.loginViaGoogle = async (req, res) => {
 
-    try {
-        const g_token = req.body.token;
-        const ticket = await client.verifyIdToken({
-            idToken: g_token,
-            audience: GOOGLE_CLIENT_ID,
-        });
-        const profile = ticket.getPayload();
+//     try {
+//         const g_token = req.body.token;
+//         const ticket = await client.verifyIdToken({
+//             idToken: g_token,
+//             audience: GOOGLE_CLIENT_ID,
+//         });
+//         const profile = ticket.getPayload();
 
-        let filter;
-        // If already Logged in then connect
-        if ("token" in req.cookies || "authorization" in req.headers) {
-            const token =
-                req.cookies.token || req.header("Authorization").replace("Bearer ", "");
-            console.log(token);
-            const decoded = jwt.verify(token, JWT_SECRET);
+//         let filter;
+//         // If already Logged in then connect
+//         if ("token" in req.cookies || "authorization" in req.headers) {
+//             const token =
+//                 req.cookies.token || req.header("Authorization").replace("Bearer ", "");
+//             console.log(token);
+//             const decoded = jwt.verify(token, JWT_SECRET);
 
-            filter = { _id: decoded.id };
-            console.log("Connected w/ google");
-        } else {
-            // Login or Sign up w/ Google
-            filter = { email: profile.email };
-            console.log("LOGIN || SIGNUP W/ GOOGLE");
-        }
+//             filter = { _id: decoded.id };
+//             console.log("Connected w/ google");
+//         } else {
+//             // Login or Sign up w/ Google
+//             filter = { email: profile.email };
+//             console.log("LOGIN || SIGNUP W/ GOOGLE");
+//         }
 
-        // update/insert user's google details
-        const options = {
-            upsert: true, // Perform an upsert operation
-            new: true, // Return the updated document, instead of the original
-            setDefaultsOnInsert: true, // Set default values for any missing fields in the original document
-        };
-        let user = await prisma.User.findUnique({
-            where: {
-                googleId: profile.sub,
-                email: profile.email,
-            }
-        })
-        console.log("new user: " + user)
-        // add name if missing or if new user
-        if (!user.name) {
-            user = await prisma.User.create({
-                data: {
-                    name: profile.name,
-                    email: profile.email,
+//         // update/insert user's google details
+//         const options = {
+//             upsert: true, // Perform an upsert operation
+//             new: true, // Return the updated document, instead of the original
+//             setDefaultsOnInsert: true, // Set default values for any missing fields in the original document
+//         };
+//         let user = await prisma.User.findUnique({
+//             where: {
+//                 googleId: profile.sub,
+//                 email: profile.email,
+//             }
+//         })
+//         console.log("new user: " + user)
+//         // add name if missing or if new user
+//         if (!user.name) {
+//             user = await prisma.User.create({
+//                 data: {
+//                     name: profile.name,
+//                     email: profile.email,
 
-                    googleId: profile.sub,
-                    photoUrl: profile.picture,
+//                     googleId: profile.sub,
+//                     photoUrl: profile.picture,
 
-                }
-            })
-        }
+//                 }
+//             })
+//         }
 
 
 
-        // return jwt token
-        cookieToken(user, res);
-    } catch (error) {
-        console.log(error);
-        return new HTTPError(res, 500, error, "internal server error");
-    }
-};
+//         // return jwt token
+//         cookieToken(user, res);
+//     } catch (error) {
+//         console.log(error);
+//         return new HTTPError(res, 500, error, "internal server error");
+//     }
+// };
 
 
 exports.loginWithPhone = async () => {
