@@ -4,23 +4,22 @@ require('dotenv').config();
 
 const express = require('express')
 const cors = require('cors')
-const fileUpload = require("express-fileupload")
-const { PrismaClient } = require('@prisma/client')
+// const fileUpload = require("express-fileupload")
 
 const sellerRoute = require("./routes/sellerRoute")
 const userRoute = require("./routes/userRoute")
 const propertyRoute = require("./routes/propertyRoute")
-const { auth, requiresAuth } = require('express-openid-connect');
+// const { auth, requiresAuth } = require('express-openid-connect');
 const { upload } = require('./utils/awsStorage')
 
-const config = {
-    authRequired: false,
-    auth0Logout: true,
-    secret: process.env.OAUTH_SECRET_KEY,
-    baseURL: 'http://localhost:5000',
-    clientID: 'YBcJl0NMgG4DFAtYACI5Sz4x1TQKcbTs',
-    issuerBaseURL: 'https://dev-l2eeqw7ltkafqgtn.us.auth0.com'
-};
+// const config = {
+//     authRequired: false,
+//     auth0Logout: true,
+//     secret: process.env.OAUTH_SECRET_KEY,
+//     baseURL: 'http://localhost:5000',
+//     clientID: 'YBcJl0NMgG4DFAtYACI5Sz4x1TQKcbTs',
+//     issuerBaseURL: 'https://dev-l2eeqw7ltkafqgtn.us.auth0.com'
+// };
 
 const app = express()
 
@@ -67,7 +66,7 @@ app.post("/upload", upload.array("images", 15), (req, res, next) => {
 
 app.get("/", (req, res) => {
     console.log(`Request`)
-    res.send("Callback reached")
+    res.send({ message: "Callback reached" })
 })
 
 app.get("/get", (req, res) => {
