@@ -7,11 +7,11 @@ const cors = require('cors')
 const fileUpload = require("express-fileupload")
 const { PrismaClient } = require('@prisma/client')
 
-const sellerRoute = require("../routes/sellerRoute")
-const userRoute = require("../routes/userRoute")
-const propertyRoute = require("../routes/propertyRoute")
+const sellerRoute = require("./routes/sellerRoute")
+const userRoute = require("./routes/userRoute")
+const propertyRoute = require("./routes/propertyRoute")
 const { auth, requiresAuth } = require('express-openid-connect');
-const { upload } = require('../utils/awsStorage')
+const { upload } = require('./utils/awsStorage')
 
 const config = {
     authRequired: false,
