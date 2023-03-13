@@ -65,11 +65,15 @@ app.post("/upload", upload.array("images", 15), (req, res, next) => {
     console.log(req.files)
 })
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running at port: ${process.env.PORT} `);
-});
-
 app.get("/", (req, res) => {
     console.log(`Request`)
     res.send("Callback reached")
 })
+
+app.get("/get", (req, res) => {
+    res.send("GET is called")
+})
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running at port: ${process.env.PORT} `);
+});
+

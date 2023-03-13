@@ -1,12 +1,12 @@
 const AWS = require("aws-sdk");
 const {
     AWS_SECRET_ACCESS_KEY,
-    AWS_ACCESS_KEY,
+    AWS_ACCESS,
     AWS_REGION,
 } = require("../config/config");
 
 const config = {
-    accessKeyId: AWS_ACCESS_KEY,
+    accessKeyId: AWS_ACCESS,
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
     region: AWS_REGION
 };
