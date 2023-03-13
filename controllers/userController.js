@@ -3,7 +3,7 @@ const validator = require("validator");
 const { OAuth2Client } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
 const HTTPError = require("../utils/httpError");
-const { HTTPResponse } = require("../utils/httpResponse");
+const { HTTPResponse } = require("../utils/HTTPResponse");
 const {
     JWT_SECRET,
     GOOGLE_CLIENT_ID,
