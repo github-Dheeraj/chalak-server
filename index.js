@@ -71,7 +71,7 @@ app.get("/", (req, res) => {
 })
 
 app.get("/get", (req, res) => {
-    res.send("GET is called")
+    res.send({ message: "GET is called" })
 })
 app.listen(process.env.PORT, () => {
     console.log(`Server is running at port: ${process.env.PORT} `);
