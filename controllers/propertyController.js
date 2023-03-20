@@ -12,24 +12,27 @@ exports.createProperty = async (req, res) => {
             _bedrooms,   //Int?
             _washRooms,  //Int?
             _floorNum,   //Int?
+            _floorArea,
             _parking,    //Boolean?
             _balcony,    //Int?
             _furnishing, //Furnish?
         } = req.body
         console.log("body", req.body)
-        console.log("files", req.files)
-        let sellerData = await prisma.Seller.findUniqueOrThrow(({
+        console.log("user Id", req.query.id)
+        let sellerData = await prisma.Seller.findUnique(({
             where: {
                 userId: parseInt(req.query.id)
             }
         }))
+        console.log("SellerData", sellerData)
+
         let ObjUrls = []
         if (sellerData) {
             console.log("length", req.files.length)
             if (req.files && req.files.length > 0) {
                 for (var i = 0; i < req.files.length; i++) {
                     // console.log(req.files[i]);
-                    let objUrl = await uploadToS3(req.files[i].buffer);
+                    let objUrl = await uploadToS3(req.files[i].buffer, req.files[i].originalname);
                     console.log(" Aws url", objUrl.Location);
                     ObjUrls.push(objUrl.Location);
                 }
@@ -41,30 +44,29 @@ exports.createProperty = async (req, res) => {
                 data: {
                     sellerId: sellerData.id,
                     title: _title,
-                    description: _description,
                     address: _address,
-                    type: _type,
                     cost: parseInt(_cost),
                     deposit: parseInt(_deposit),
                     bedrooms: parseInt(_bedrooms),
                     washRooms: parseInt(_washRooms),
                     floorNum: parseInt(_floorNum),
+                    floorArea: parseInt(_floorArea),
                     balcony: parseInt(_balcony),
-                    parking: _parking,
-                    furnishing: _furnishing,
+                    parking: true,
+                    furnishing: 'FULLY',
                     mediaUrls: ObjUrls
                 }
             })
-
-
-
             if (property) {
                 console.log("this is a db res");
                 return res.status(200).send(property);
 
             } else {
+
                 return res.status(500)
             }
+        } else {
+            res.status(404).send("Seller not initialized")
         }
     } catch {
         console.error
@@ -84,6 +86,7 @@ exports.updateProperty = async (req, res, next) => {
             _bedrooms,   //Int?
             _washRooms,  //Int?
             _floorNum,   //Int?
+            _floorArea,
             _parking,    //Boolean?
             _balcony,    //Int?
             _furnishing, //Furnish?
@@ -95,13 +98,14 @@ exports.updateProperty = async (req, res, next) => {
                 userId: parseInt(req.query.id)
             }
         }))
+        console.log("sellerData", sellerData)
         let ObjUrls = []
         if (sellerData) {
             console.log("length", req.files.length)
             if (req.files && req.files.length > 0) {
                 for (var i = 0; i < req.files.length; i++) {
                     // console.log(req.files[i]);
-                    let objUrl = await uploadToS3(req.files[i].buffer);
+                    let objUrl = await uploadToS3(req.files[i].buffer, req.files[i].originalname);
                     console.log(" Aws url", objUrl.Location);
                     ObjUrls.push(objUrl.Location);
                 }
@@ -115,17 +119,16 @@ exports.updateProperty = async (req, res, next) => {
                 },
                 data: {
                     title: _title,
-                    description: _description,
                     address: _address,
-                    type: _type,
                     cost: parseInt(_cost),
                     deposit: parseInt(_deposit),
                     bedrooms: parseInt(_bedrooms),
                     washRooms: parseInt(_washRooms),
                     floorNum: parseInt(_floorNum),
+                    floorArea: parseInt(_floorArea),
                     balcony: parseInt(_balcony),
-                    parking: _parking,
-                    furnishing: _furnishing,
+                    parking: true,
+                    furnishing: 'FULLY',
                     mediaUrls: {
                         push: ObjUrls
                     }

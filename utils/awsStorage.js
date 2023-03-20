@@ -1,12 +1,12 @@
 const AWS = require("aws-sdk");
 const {
     AWS_SECRET_ACCESS_KEY,
-    AWS_ACCESS,
+    AWS_ACCESS_KEY,
     AWS_REGION,
 } = require("../config/config");
 
 const config = {
-    accessKeyId: AWS_ACCESS,
+    accessKeyId: AWS_ACCESS_KEY,
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
     region: AWS_REGION
 };
@@ -41,11 +41,11 @@ exports.upload = multer({
 });
 
 //upload to s3
-exports.uploadToS3 = (fileData) => {
+exports.uploadToS3 = (fileData, fileName) => {
     return new Promise((resolve, reject) => {
         const params = {
             Bucket: bucketName,
-            Key: `${Date.now().toString()}.jpg`,
+            Key: fileName,
             Body: fileData,
         };
         s3.upload(params, (err, data) => {

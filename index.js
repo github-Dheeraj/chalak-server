@@ -2,12 +2,15 @@
 
 require('dotenv').config();
 
+
+
 const express = require('express')
 const cors = require('cors')
 const userRoute = require("./routes/userRoute")
 const propertyRoute = require("./routes/propertyRoute")
+const sellerRoute = require("./routes/sellerRoute")
 const { upload } = require('./utils/awsStorage')
-
+const { signUp } = require('./utils/whatsApp')
 
 const app = express()
 
@@ -27,14 +30,13 @@ app.use("/user", userRoute)
 
 app.use("/property", propertyRoute)
 
+app.use("/seller", sellerRoute)
+
 app.post("/upload", upload.array("images", 15), (req, res, next) => {
     console.log(req.files)
 })
 
-app.get("/", (req, res) => {
-    console.log(`Request`)
-    res.send({ message: "Callback reached" })
-})
+app.get("/", signUp)
 
 app.get("/get", (req, res) => {
     res.send({ message: "GET is called" })

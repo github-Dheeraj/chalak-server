@@ -1,7 +1,7 @@
 require("dotenv").config()
 module.exports = {
     /* BASIC CONFIGS */
-    PORT: process.env.PORT || 5000,
+    PORT: process.env.PORT || 4000,
 
 
     /* AUTH CONFIGS */
@@ -23,7 +23,7 @@ module.exports = {
     /* DISCORD CONFIGS */
 
     /* AWS CONFIGS */
-    AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY || "",
+    AWS_ACCESS_KEY: process.env.AWS_ACCESS || "",
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || "",
     AWS_REGION: process.env.AWS_REGION || "",
 };

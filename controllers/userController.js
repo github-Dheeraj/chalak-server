@@ -1,16 +1,17 @@
 const { PrismaClient } = require('@prisma/client')
 const validator = require("validator");
 const { OAuth2Client } = require("google-auth-library");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 // const HTTPError = require("../utils/httpError");
 // const { HTTPResponse } = require("../utils/httpResponse");
-const {
-    JWT_SECRET,
-    GOOGLE_CLIENT_ID,
-} = require("../config/config");
+// const {
+//     JWT_SECRET,
+//     GOOGLE_CLIENT_ID,
+// } = require("../config/config");
 const prisma = new PrismaClient()
 
 const { upload, uploadToS3 } = require("../utils/awsStorage")
+const { messageUser } = require("../utils/whatsApp")
 
 
 //Implementation of login with google credentials
@@ -18,37 +19,41 @@ const { upload, uploadToS3 } = require("../utils/awsStorage")
 exports.createUser = async (req, res) => {
     console.log("req body ", req.body)
     try {
-
+        console.log(req.body._email)
         let userExist = await prisma.User.findUnique({
             where: {
-                email: req.body.email
+                email: req.body._email
             }
         })
+        console.log("files", req.file.originalname)
+
         if (!userExist) {
             let _picture;
             let { _name, _email, _googleId } = req.body
             if (req.file) {
-                let obj = await uploadToS3(req.file.buffer);
+                let obj = await uploadToS3(req.file.buffer, req.file.originalname);
                 _picture = obj.Location
             }
+            console.log("picture", _picture)
+
             let user = await prisma.User.create({
                 data: {
                     name: _name,
                     email: _email,
                     picture: _picture,
-                    googleId: _googleId
+                    googleId: _googleId,
                 }
             })
             console.log("user created, ", user)
             if (user) {
                 console.log("this is a db res");
-                return res.status(200).send("User Created", user);
+                return res.status(200).send(user);
 
             } else {
                 return res.status(500).send("Please input correct fields")
             }
         } else {
-            return res.status(409).send("User Already exists")
+            return res.status(409).send("Email Already exists")
         }
 
     } catch (err) {
@@ -70,7 +75,7 @@ exports.loginUser = async (req, res) => {
         if (userExist) {
             res.status(200).send(userExist)
         } else {
-            res.status(404).send("email does not exist")
+            res.status(404).send("Email does not exist")
         }
     } catch {
         console.error
@@ -84,15 +89,17 @@ exports.updateUser = async (req, res) => {
         let {
             _name,
             _phone,
-            _photoUrl,
             _socialLinks,
         } = req.body
         console.log("body", req.body)
-        let userData = await prisma.User.findUnique({
-            where: { id: parseInt(req.query.id) }
+        let userExist = await prisma.User.findUnique({
+            where: {
+                id: parseInt(req.query.id)
+            },
         })
-        console.log("userData", userData)
-        console.log("socialLinks", _socialLinks.length)
+        console.log("user Exixts", userExist)
+        console.log("social link", _socialLinks.length)
+
 
         if (_socialLinks.length > 0) {
             for (let i = 0; i < _socialLinks.length; i++) {
@@ -105,28 +112,36 @@ exports.updateUser = async (req, res) => {
                 })
             }
         }
-
-        let updateRes = await prisma.User.update({
-            where: { id: parseInt(req.query.id) },
-            data: {
-                name: _name,
-                phone: _phone,
-                photoUrl: _photoUrl
-
+        if (userExist) {
+            let _picture;
+            if (req.file) {
+                let obj = await uploadToS3(req.file.buffer, req.file.originalname);
+                _picture = obj.Location
             }
-        })
-        if (updateRes) {
-            console.log("this is a db res");
-            return res.status(200).send(updateRes);
+            console.log("picture", _picture)
 
+            let updateRes = await prisma.User.update({
+                where: { id: userExist.id },
+                data: {
+                    name: _name,
+                    phone: _phone,
+                    picture: _picture
+
+                }
+            })
+            if (updateRes) {
+                console.log("this is a db res");
+                return res.status(200).send(updateRes);
+
+            } else {
+                return res.status(404).send("Profile not updated")
+            }
         } else {
-            return res.status(500)
+            res.status(404).send("User Does not exist")
         }
     } catch {
         console.error
     }
-
-
 }
 
 exports.checkUserDetails = async (req, res) => {
@@ -135,7 +150,7 @@ exports.checkUserDetails = async (req, res) => {
         const userDetail = await prisma.User.findUnique({
             where: {
                 id: parseInt(req.query.id)
-            }
+            },
         })
 
         if (userDetail) {
@@ -143,7 +158,7 @@ exports.checkUserDetails = async (req, res) => {
             return res.status(200).send(userDetail);
 
         } else {
-            return res.status(500)
+            return res.status(404).send("User does not exist")
         }
     } catch {
         console.error
@@ -162,7 +177,7 @@ exports.deleteuser = async (req, res) => {
             return res.status(200).send(deleteUsers);
 
         } else {
-            return res.status(500)
+            return res.status(404).send("User not found")
         }
     } catch {
         console.error
@@ -173,6 +188,7 @@ exports.deleteuser = async (req, res) => {
 //check if user has listed the property  before adding it to bookmark
 exports.userBookmarkProperty = async (req, res) => {
     try {
+        console.log("req body", req.body)
         let { _propertyId } = req.body
         let propertyData = await prisma.Property.findFirstOrThrow({
             where: { id: _propertyId }
@@ -191,8 +207,10 @@ exports.userBookmarkProperty = async (req, res) => {
                 return res.status(200).send(interest);
 
             } else {
-                return res.status(500)
+                return res.status(404)
             }
+        } else {
+            res.status(404).send("No such property listed")
         }
 
 
@@ -203,18 +221,24 @@ exports.userBookmarkProperty = async (req, res) => {
 
 exports.userUnBookmarkProperty = async (req, res) => {
     try {
+        console.log("req body", req.body)
         let { _propertyId } = req.body
-        let propertyData = await prisma.IntrestedProperties.findFirstOrThrow({
+        let propertyData = await prisma.IntrestedProperties.findUnique({
             where: {
-                userId: parseInt(req.query.id),
-                propertyId: _propertyId
+                userId_propertyId: {
+                    userId: parseInt(req.query.id),
+                    propertyId: parseInt(_propertyId)
+                }
             }
         })
+        console.log("propertyData", propertyData)
         if (propertyData) {
             let unInterest = await prisma.IntrestedProperties.delete({
                 where: {
-                    userId: parseInt(req.query.id),
-                    propertyId: _propertyId
+                    userId_propertyId: {
+                        userId: parseInt(req.query.id),
+                        propertyId: _propertyId
+                    }
                 }
 
             })
@@ -226,6 +250,8 @@ exports.userUnBookmarkProperty = async (req, res) => {
             } else {
                 return res.status(500)
             }
+        } else {
+            res.status(404).send("No such property bookmarked by user")
         }
 
 
@@ -238,54 +264,48 @@ exports.userUnBookmarkProperty = async (req, res) => {
 
 exports.sendMessageToSeller = async (req, res) => {
     try {
+        console.log("req body", req.body)
+        let { _propertyId,
+            _name,
+            _phone,
+            _message } = req.body
 
-        let { propertyId,
-            name,
-            phone,
-            message } = req.body
-
-        let checkIfExist = await prisma.Property.find({
+        let checkIfExist = await prisma.Property.findUnique({
             where: {
-                id: propertyId
+                id: _propertyId
             }
         })
+        console.log("check if exixst", checkIfExist)
         if (checkIfExist) {
-            let checkUser = await prisma.user.find({
+            let checkUser = await prisma.User.findUnique({
                 where: {
                     id: parseInt(req.query.id)
                 }
             })
-
+            console.log("check user", checkUser)
             if (checkUser) {
                 let newMessage = await prisma.Message.create({
-                    propertyId: propertyId,
-                    userId: parseInt(req.query.id),
-                    name: name,
-                    phone: phone,
-                    message: message
-                })
-
-                await prisma.User.update({
-                    where: { id: parseInt(req.query.id) },
                     data: {
-                        sentMessages: sentMessages.push(newMessage)
+                        propertyId: _propertyId,
+                        userId: parseInt(req.query.id),
+                        name: _name,
+                        phone: _phone,
+                        message: _message,
+                        sellerId: checkIfExist.sellerId
                     }
                 })
-                let propertyData = await prisma.Property.find({
-                    where: {
-                        id: propertyId
-                    }
-                })
-                let _sellerId = propertyData.sellerId
+                messageUser(_phone, _message)
+                if (newMessage) {
+                    res.status(200).send(newMessage)
+                } else {
+                    res.status(404).send("Message generation failed")
+                }
 
-                await prisma.Seller.update({
-                    where: { id: _sellerId },
-                    data: {
-                        sentMessages: sentMessages.push(newMessage)
-                    }
-                })
-
+            } else {
+                res.status(404).send("User not found")
             }
+        } else {
+            res.status(404).send("Property not found")
         }
 
     } catch {

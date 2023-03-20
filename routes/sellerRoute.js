@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { createSeller, deleteSeller, updateSeller,  getAllMessages, checkSellerDetails } = require("../controllers/sellerController")
+const { createSeller, deleteSeller, updateSeller, getAllMessages, checkSellerDetails } = require("../controllers/sellerController")
 
 router.route("/create").post(createSeller)
 // router.route("/phoneLogmin").post(loginWithPhone)

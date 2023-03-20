@@ -8,12 +8,13 @@ const { createUser,
     loginWithPhone,
     sendMessageToSeller
 } = require("../controllers/userController")
+const { upload } = require("../utils/awsStorage")
 
-router.route("/create").post(createUser)
+router.route("/create").post(upload.single("image"), createUser)
 // router.route("/phoneLogmin").post(loginWithPhone)
 
 router.route("/delete").get(deleteuser)
-router.route("/update").post(updateUser)
+router.route("/update").post(upload.single("image"), updateUser)
 
 router.route("/bookmarkProperty").get(userBookmarkProperty)
 router.route("/unBookmarkProperty").get(userUnBookmarkProperty)

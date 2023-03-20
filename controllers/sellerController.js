@@ -13,28 +13,39 @@ require('dotenv').config();
 
 
 //Comment this will not be used until login flow with Email and Password is Done
-exports.createSeller = async (req, res, next) => {
+exports.createSeller = async (req, res) => {
     console.log("createSeller")
     console.log("req body", req.body)
     try {
         let { _businessId, _tags } = req.body
-
-        let seller = await prisma.Seller.create({
-            data: {
-                userId: parseInt(req.query.id),
-                businessId: _businessId,
-                tags: _tags
-
+        let userData = await prisma.User.findUnique({
+            where: {
+                id: parseInt(req.query.id)
             }
         })
-        console.log("successfully seller", seller)
-        if (seller) {
-            console.log("this is a db res");
-            return res.status(200).send(seller);
+        console.log("user", userData)
 
+        if (userData) {
+            let seller = await prisma.Seller.create({
+                data: {
+                    userId: userData.id,
+                    businessId: _businessId,
+                    tags: _tags
+
+                }
+            })
+            console.log("successfully seller", seller)
+            if (seller) {
+                console.log("this is a db res");
+                return res.status(200).send(seller);
+
+            } else {
+                return res.status(500)
+            }
         } else {
-            return res.status(500)
+            res.status(404).send("User not found")
         }
+
     } catch {
         console.error
     }
@@ -100,18 +111,31 @@ exports.checkSellerDetails = async (req, res) => {
 }
 
 exports.deleteSeller = async (req, res) => {
+    console.log("delete users")
+
     try {
-        const deleteUsers = await prisma.Seller.delete({
+        const user = await prisma.Seller.findUnique({
             where: {
                 userId: parseInt(req.query.id)
             }
         })
-        if (deleteUsers) {
-            console.log("this is a db res");
-            return res.status(200).send(deleteUsers);
+        console.log("delete users", deleteUsers)
+        if (user) {
+
+            const usersDelete = await prisma.Seller.findUnique({
+                where: {
+                    userId: user.id
+                }
+            })
+            if (usersDelete) {
+                console.log("this is a db res");
+                return res.status(200).send(deleteUsers);
+            } else {
+                return res.status(404).send("Seller not found")
+            }
 
         } else {
-            return res.status(500)
+            return res.status(404).send("Seller not found")
         }
     } catch {
         console.error

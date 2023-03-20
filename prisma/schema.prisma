@@ -23,7 +23,8 @@ model Property {
   bedrooms   Int?
   washRooms  Int?
   floorNum   Int?
-  parking    Boolean?  @default(true)
+  floorArea  Int?
+  parking    Boolean? @default(true)
   balcony    Int?
   furnishing Furnish?
   mediaUrls  String[]
@@ -37,10 +38,10 @@ model Seller {
   id               Int        @id @default(autoincrement())
   businessId       String?    @unique
   tags             String[]
-  userId           Int        @unique
   messagesRecieved Message[]
-  user             User       @relation(fields: [userId], references: [id])
   Property         Property[]
+  user             User       @relation(fields: [userId], references: [id])
+  userId           Int        @unique
 }
 
 model User {
@@ -50,11 +51,11 @@ model User {
   email               String                @unique
   createdAt           DateTime              @default(now())
   googleId            String?               @unique
-  photoUrl            String?
+  picture             String?
   sentMessages        Message[]
   intrestedProperties IntrestedProperties[]
-  Seller              Seller[]
   socialLinks         SocialLink[]
+  Seller              Seller[]
 }
 
 model IntrestedProperties {
@@ -71,6 +72,7 @@ model Message {
   propertyId Int
   userId     Int
   name       String
+  phone      String
   message    String?
   sellerId   Int
   sendAt     DateTime @default(now())
