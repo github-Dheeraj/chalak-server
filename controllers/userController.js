@@ -15,7 +15,7 @@ const { messageUser } = require("../utils/whatsApp")
 
 
 //Implementation of login with google credentials
-
+//SignUp user
 exports.createUser = async (req, res) => {
     console.log("req body ", req.body)
     try {
@@ -47,7 +47,7 @@ exports.createUser = async (req, res) => {
             console.log("user created, ", user)
             if (user) {
                 console.log("this is a db res");
-                return res.status(200).send(user);
+                return res.status(201).send(user);
 
             } else {
                 return res.status(500).send("Please input correct fields")
@@ -64,7 +64,7 @@ exports.createUser = async (req, res) => {
 
 
 
-
+//Login user
 exports.loginUser = async (req, res) => {
     try {
         let userExist = await prisma.User.findUnique({
@@ -73,7 +73,7 @@ exports.loginUser = async (req, res) => {
             }
         })
         if (userExist) {
-            res.status(200).send(userExist)
+            res.status(201).send(userExist)
         } else {
             res.status(404).send("Email does not exist")
         }

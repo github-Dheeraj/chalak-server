@@ -1,4 +1,4 @@
-// Google Login Info shared
+<!-- // Google Login Info shared
 {
     "given_name": "dheeraj",
     "family_name": "borde",
@@ -106,4 +106,4 @@ model User {
   socialLinks         socialLink[]
   intrestedProperties Property[]
   sentMessages        message[]
-}
+} -->
