@@ -29,6 +29,7 @@
     "openai": "^3.2.1",
     "qrcode-terminal": "^0.12.0",
     "validator": "^13.9.0",
-    "whatsapp-web.js": "^1.19.4"
+    "whatsapp-web.js": "^1.19.4",
+    "prisma": "^4.11.0"
   }
 }
