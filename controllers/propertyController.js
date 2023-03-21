@@ -69,7 +69,7 @@ exports.createProperty = async (req, res) => {
             res.status(404).send("Seller not initialized")
         }
     } catch {
-        console.error
+        res.status(404).send("Error in operation execution")
     }
 
 }
@@ -140,11 +140,11 @@ exports.updateProperty = async (req, res, next) => {
                 return res.status(200).send(property);
 
             } else {
-                return res.status(500)
+                return res.status(404).send("Error in creation")
             }
         }
     } catch {
-        console.error
+        res.status(404).send("Error in operation execution")
     }
 
 }
@@ -159,10 +159,10 @@ exports.deleteProperty = async (req, res, next) => {
             return res.status(200).send(deleteDB);
 
         } else {
-            return res.status(500)
+            return res.status(404).send("propoerty does not exist");
         }
     } catch {
-        console.error
+        res.status(404).send("Error in operation execution")
     }
 
 }

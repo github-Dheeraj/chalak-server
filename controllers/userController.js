@@ -46,13 +46,13 @@ exports.createUser = async (req, res) => {
             console.log("user created, ", user)
             if (user) {
                 console.log("this is a db res");
-                return res.status(201).send(user);
+                return res.status(200).send(user);
 
             } else {
-                return res.status(500).send("Please input correct fields")
+                return res.status(404).send("Please input correct fields")
             }
         } else {
-            return res.status(400).send("Email Already exists")
+            return res.status(404).send("Email Already exists")
         }
 
     } catch (err) {
@@ -72,7 +72,7 @@ exports.loginUser = async (req, res) => {
             }
         })
         if (userExist) {
-            res.status(201).send(userExist)
+            res.status(200).send(userExist)
         } else {
             res.status(404).send("Email does not exist")
         }
