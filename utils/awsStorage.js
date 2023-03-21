@@ -6,14 +6,13 @@ const {
     AWS_BUCKET_NAME
 } = require("../config/config");
 
-const config = {
+AWS.config.update({
     accessKeyId: AWS_ACCESS_KEY,
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
-    region: AWS_REGION
-};
-let multer = require("multer");
+});
 
-const s3 = new AWS.S3(config);
+const s3 = new AWS.S3();
+let multer = require("multer");
 
 // const bucketName = process.env.AWS_BUCKET_NAME
 
