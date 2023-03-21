@@ -19,13 +19,12 @@ const { messageUser } = require("../utils/whatsApp")
 exports.createUser = async (req, res) => {
     console.log("req body ", req.body)
     try {
-        console.log(req.body._email)
         let userExist = await prisma.User.findUnique({
             where: {
                 email: req.body._email
             }
         })
-        console.log("files", req.file.originalname)
+        console.log("user", userExist)
 
         if (!userExist) {
             let _picture;
@@ -53,7 +52,7 @@ exports.createUser = async (req, res) => {
                 return res.status(500).send("Please input correct fields")
             }
         } else {
-            return res.status(409).send("Email Already exists")
+            return res.status(400).send("Email Already exists")
         }
 
     } catch (err) {
