@@ -9,7 +9,7 @@ const {
 AWS.config.update({
     accessKeyId: AWS_ACCESS_KEY,
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
-    region : AWS_REGION
+    region: AWS_REGION
 });
 
 const s3 = new AWS.S3();
@@ -46,7 +46,7 @@ exports.uploadToS3 = (fileData, fileName) => {
     console.log("bucket name: ", AWS_BUCKET_NAME)
     return new Promise((resolve, reject) => {
         const params = {
-            Bucket: "listableawsbucket",
+            Bucket: AWS_BUCKET_NAME,
             Key: fileName,
             Body: fileData,
         };
