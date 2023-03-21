@@ -45,7 +45,7 @@ exports.upload = multer({
 exports.uploadToS3 = (fileData, fileName) => {
     return new Promise((resolve, reject) => {
         const params = {
-            Bucket: AWS_BUCKET_NAME,
+            Bucket: "listableawsbucket",
             Key: fileName,
             Body: fileData,
         };
