@@ -47,7 +47,7 @@ model Seller {
 model User {
   id                  Int                   @id @default(autoincrement())
   name                String
-  phone               String?                @unique
+  phone               String?               @unique
   email               String                @unique
   createdAt           DateTime              @default(now())
   googleId            String?               @unique

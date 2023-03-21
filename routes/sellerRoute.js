@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const HTTPError = require("../utils/httpError");
+const HTTPError = require("../utils/HTTPError");
 const { HTTPResponse } = require("../utils/httpResponse");
 const { createSeller, deleteSeller, updateSeller, getAllMessages, checkSellerDetails } = require("../controllers/sellerController")
 

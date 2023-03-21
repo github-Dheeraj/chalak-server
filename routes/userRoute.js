@@ -10,7 +10,7 @@ const { createUser,
     loginUser
 } = require("../controllers/userController")
 const { upload } = require("../utils/awsStorage")
-const HTTPError = require("../utils/httpError");
+const HTTPError = require("../utils/HTTPError");
 const { HTTPResponse } = require("../utils/httpResponse");
 
 router.route("/create").post(upload.single("image"), createUser)
