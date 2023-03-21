@@ -58,18 +58,18 @@ exports.createProperty = async (req, res) => {
                 }
             })
             if (property) {
-                console.log("this is a db res");
-                return res.status(200).send(property);
+                console.log("Property created");
+                return new HTTPResponse(res, true, 200, null, null, { property });
 
             } else {
 
-                return res.status(500)
+                return new HTTPError(res, 400, null, "internal server error")
             }
         } else {
-            res.status(404).send("Seller not initialized")
+            return new HTTPError(res, 404, null, "Seller not initialized")
         }
     } catch {
-        res.status(404).send("Error in operation execution")
+        return new HTTPError(res, 400, err, "internal server error")
     }
 
 }
@@ -137,14 +137,14 @@ exports.updateProperty = async (req, res, next) => {
 
             if (property) {
                 console.log("this is a db res");
-                return res.status(200).send(property);
+                return new HTTPResponse(res, true, 200, null, null, { property });
 
             } else {
-                return res.status(404).send("Error in creation")
+                return new HTTPError(res, 400, null, "internal server error")
             }
         }
-    } catch {
-        res.status(404).send("Error in operation execution")
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 
 }
@@ -156,13 +156,13 @@ exports.deleteProperty = async (req, res, next) => {
         })
         if (deleteDB) {
             console.log("this is a db res");
-            return res.status(200).send(deleteDB);
+            return new HTTPResponse(res, true, 200, null, null, { deleteDB });
 
         } else {
-            return res.status(404).send("propoerty does not exist");
+            return new HTTPError(res, 400, null, "internal server error")
         }
     } catch {
-        res.status(404).send("Error in operation execution")
+        return new HTTPError(res, 400, err, "internal server error")
     }
 
 }

@@ -2,8 +2,8 @@ const { PrismaClient } = require('@prisma/client')
 const validator = require("validator");
 const { OAuth2Client } = require("google-auth-library");
 // const jwt = require("jsonwebtoken");
-// const HTTPError = require("../utils/httpError");
-// const { HTTPResponse } = require("../utils/httpResponse");
+const HTTPError = require("../utils/httpError");
+const { HTTPResponse } = require("../utils/httpResponse");
 // const {
 //     JWT_SECRET,
 //     GOOGLE_CLIENT_ID,
@@ -43,20 +43,15 @@ exports.createUser = async (req, res) => {
                     googleId: _googleId,
                 }
             })
-            console.log("user created, ", user)
-            if (user) {
-                console.log("this is a db res");
-                return res.status(200).send(user);
+            console.log("User created");
+            return new HTTPResponse(res, true, 200, null, null, { user })
 
-            } else {
-                return res.status(404).send("Please input correct fields")
-            }
         } else {
-            return res.status(404).send("Email Already exists")
+            return new HTTPError(res, 404, null, "Email already exists")//not found error 
         }
 
     } catch (err) {
-        console.error
+        return new HTTPError(res, 400, err, "internal server error") // bad payload error
     }
 
 }
@@ -72,12 +67,12 @@ exports.loginUser = async (req, res) => {
             }
         })
         if (userExist) {
-            res.status(200).send(userExist)
+            return new HTTPResponse(res, true, 200, null, null, { userExist })
         } else {
-            res.status(404).send("Email does not exist")
+            return new HTTPError(res, 404, null, "Email already exists")
         }
-    } catch {
-        console.error
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 }
 
@@ -128,18 +123,14 @@ exports.updateUser = async (req, res) => {
 
                 }
             })
-            if (updateRes) {
-                console.log("this is a db res");
-                return res.status(200).send(updateRes);
+            console.log("User Updated");
+            return new HTTPResponse(res, true, 200, null, null, { updateRes })
 
-            } else {
-                return res.status(404).send("Profile not updated")
-            }
         } else {
-            res.status(404).send("User Does not exist")
+            return new HTTPError(res, 404, null, "Email does not exists")
         }
-    } catch {
-        console.error
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 }
 
@@ -153,33 +144,41 @@ exports.checkUserDetails = async (req, res) => {
         })
 
         if (userDetail) {
-            console.log("this is a db res");
-            return res.status(200).send(userDetail);
+            console.log("User found");
+            return new HTTPResponse(res, true, 200, null, null, { userDetail })
 
         } else {
             return res.status(404).send("User does not exist")
         }
-    } catch {
-        console.error
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 }
 
 exports.deleteuser = async (req, res) => {
     try {
-        const deleteUsers = await prisma.User.delete({
+
+        const userDetail = await prisma.User.findUnique({
             where: {
                 id: parseInt(req.query.id)
             },
         })
-        if (deleteUsers) {
-            console.log("this is a db res");
-            return res.status(200).send(deleteUsers);
 
+        if (userDetail) {
+
+            const deleteUsers = await prisma.User.delete({
+                where: {
+                    id: parseInt(req.query.id)
+                },
+            })
+            console.log("User deleted");
+            return new HTTPResponse(res, true, 200, null, null, { deleteUsers })
         } else {
-            return res.status(404).send("User not found")
+            return new HTTPError(res, 404, null, "User does not exists")
         }
-    } catch {
-        console.error
+
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 
 }
@@ -201,20 +200,17 @@ exports.userBookmarkProperty = async (req, res) => {
 
             })
 
-            if (interest) {
-                console.log("this is a db res");
-                return res.status(200).send(interest);
+            console.log("property bookmarked");
+            return new HTTPResponse(res, true, 200, null, null, { interest });
 
-            } else {
-                return res.status(404)
-            }
+
         } else {
-            res.status(404).send("No such property listed")
+            return new HTTPError(res, 404, null, "No such property listed")
         }
 
 
-    } catch {
-        console.error
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 }
 
@@ -242,20 +238,17 @@ exports.userUnBookmarkProperty = async (req, res) => {
 
             })
 
-            if (unInterest) {
-                console.log("this is a db res");
-                return res.status(200).send(unInterest);
+            console.log("Property un Bookmarked");
+            return new HTTPResponse(res, true, 200, null, null, { unInterest });
 
-            } else {
-                return res.status(500)
-            }
+
         } else {
-            res.status(404).send("No such property bookmarked by user")
+            return new HTTPError(res, 404, null, "No such property bookmarked by user")
         }
 
 
-    } catch {
-        console.error
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 }
 
@@ -293,22 +286,20 @@ exports.sendMessageToSeller = async (req, res) => {
                         sellerId: checkIfExist.sellerId
                     }
                 })
-                messageUser(_phone, _message)
-                if (newMessage) {
-                    res.status(200).send(newMessage)
-                } else {
-                    res.status(404).send("Message generation failed")
-                }
+                //send whatsApp message to user
+                // messageUser(_phone, _message)  
+                return new HTTPResponse(res, true, 200, null, null, { newMessage })
+
 
             } else {
-                res.status(404).send("User not found")
+                return new HTTPError(res, 404, null, "User not found")
             }
         } else {
-            res.status(404).send("Property not found")
+            return new HTTPError(res, 404, null, "Property not found")
         }
 
-    } catch {
-        console.error
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 }
 

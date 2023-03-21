@@ -4,7 +4,8 @@ const prisma = new PrismaClient()
 const validator = require("validator");
 const { OAuth2Client } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
-// const HTTPError = require("../utils/httpError");
+const HTTPError = require("../utils/httpError");
+const { HTTPResponse } = require("../utils/httpResponse");
 const {
     JWT_SECRET,
     GOOGLE_CLIENT_ID,
@@ -36,18 +37,18 @@ exports.createSeller = async (req, res) => {
             })
             console.log("successfully seller", seller)
             if (seller) {
-                console.log("this is a db res");
-                return res.status(200).send(seller);
+                console.log("seller created");
+                return new HTTPResponse(res, true, 200, null, null, { seller });
 
             } else {
-                return res.status(500)
+                return new HTTPError(res, 400, null, "internal server error")
             }
         } else {
-            res.status(404).send("User not found")
+            return new HTTPError(res, 404, null, "User not found")
         }
 
-    } catch {
-        console.error
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 }
 
@@ -75,13 +76,13 @@ exports.updateSeller = async (req, res) => {
         console.log("update successful", updateRes)
         if (updateRes) {
             console.log("this is a db res");
-            return res.status(200).send(updateRes);
+            return new HTTPResponse(res, true, 200, null, null, { updateRes });
 
         } else {
-            return res.status(500)
+            return new HTTPError(res, 400, null, "internal server error")
         }
-    } catch {
-        console.error
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 
 
@@ -99,13 +100,13 @@ exports.checkSellerDetails = async (req, res) => {
 
         if (sellerDetail) {
             console.log("this is a db res");
-            return res.status(200).send(sellerDetail);
+            return new HTTPResponse(res, true, 200, null, null, { sellerDetail });
 
         } else {
-            return res.status(500)
+            return new HTTPError(res, 404, null, "seller not found")
         }
-    } catch {
-        console.error
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 
 }
@@ -129,16 +130,16 @@ exports.deleteSeller = async (req, res) => {
             })
             if (usersDelete) {
                 console.log("this is a db res");
-                return res.status(200).send(deleteUsers);
+                return new HTTPResponse(res, true, 200, null, null, { deleteUsers });
             } else {
                 return res.status(404).send("Seller not found")
             }
 
         } else {
-            return res.status(404).send("Seller not found")
+            return new HTTPError(res, 404, null, "seller not found")
         }
-    } catch {
-        console.error
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 
 }
@@ -154,10 +155,10 @@ exports.getAllMessages = async (req, res, next) => {
             return res.status(200).send(getSeller.messagesRecieved);
 
         } else {
-            return res.status(500)
+            return new HTTPError(res, 404, null, "seller not found")
         }
-    } catch {
-        console.error
+    } catch (err) {
+        return new HTTPError(res, 400, err, "internal server error")
     }
 }
 
