@@ -4,8 +4,8 @@ const prisma = new PrismaClient()
 const validator = require("validator");
 const { OAuth2Client } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
-const HTTPError = require("../utils/httpError");
-const { HTTPResponse } = require("../utils/httpResponse");
+const HTTPError = require("../utils/httpError.js");
+const { HTTPResponse } = require("../utils/httpResponse.js");
 const {
     JWT_SECRET,
     GOOGLE_CLIENT_ID,

@@ -2,17 +2,15 @@
 
 require('dotenv').config();
 
-
-
 const express = require('express')
 const cors = require('cors')
 const userRoute = require("./routes/userRoute")
 const propertyRoute = require("./routes/propertyRoute")
 const sellerRoute = require("./routes/sellerRoute")
-const { upload } = require('./utils/awsStorage')
 const { signUp } = require('./utils/whatsApp');
-const { checkout } = require('./routes/userRoute');
 
+const HTTPError = require("./utils/httpError");
+const { HTTPResponse } = require("./utils/httpResponse.js");
 const app = express()
 
 app.use(express.json());
@@ -38,9 +36,9 @@ app.get("/whatsApp", signUp)
 
 app.get("/", (req, res, next) => {
     try {
-        res.status(201).send({ message: "Server Initiated" })
+        return new HTTPResponse(res, true, 200, "Server initiated", null, null)
     } catch {
-        res.status(404).send({ message: "Please check the connection" })
+        return new HTTPError(res, 400, err, "internal server error")
     }
 })
 
