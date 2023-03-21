@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client')
 const validator = require("validator");
 const { OAuth2Client } = require("google-auth-library");
 // const jwt = require("jsonwebtoken");
-const { HTTPError } = require("../utils/HTTPError.js");
+const HTTPError  = require("../utils/HTTPError.js");
 const { HTTPResponse } = require("../utils/httpResponse.js");
 // const {
 //     JWT_SECRET,

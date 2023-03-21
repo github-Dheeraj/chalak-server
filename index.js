@@ -9,7 +9,7 @@ const propertyRoute = require("./routes/propertyRoute")
 const sellerRoute = require("./routes/sellerRoute")
 const { signUp } = require('./utils/whatsApp');
 
-const { HTTPError } = require("./utils/HTTPError");
+const HTTPError = require("./utils/HTTPError");
 const { HTTPResponse } = require("./utils/httpResponse.js");
 const app = express()
 

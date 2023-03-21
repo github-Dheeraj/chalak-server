@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 const { upload, uploadToS3 } = require('../utils/awsStorage')
-const { HTTPError } = require("../utils/HTTPError");
+const HTTPError = require("../utils/HTTPError");
 const { HTTPResponse } = require("../utils/httpResponse");
 
 exports.createProperty = async (req, res) => {
