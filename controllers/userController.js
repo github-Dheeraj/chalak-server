@@ -27,19 +27,13 @@ exports.createUser = async (req, res) => {
         console.log("user", userExist)
 
         if (!userExist) {
-            let _picture;
-            let { _name, _email, _googleId } = req.body
-            if (req.file) {
-                let obj = await uploadToS3(req.file.buffer, req.file.originalname);
-                _picture = obj.Location
-            }
-            console.log("picture", _picture)
+
 
             let user = await prisma.User.create({
                 data: {
                     name: _name,
                     email: _email,
-                    picture: _picture,
+                    picture: _pictureUrl,
                     googleId: _googleId,
                 }
             })
@@ -84,8 +78,7 @@ exports.updateUser = async (req, res) => {
     try {
         let {
             _name,
-            _phone,
-            _socialLinks,
+            _phone
         } = req.body
         console.log("body", req.body)
         let userExist = await prisma.User.findUnique({
@@ -94,20 +87,19 @@ exports.updateUser = async (req, res) => {
             },
         })
         console.log("user Exixts", userExist)
-        console.log("social link", _socialLinks.length)
-
-
-        if (_socialLinks.length > 0) {
-            for (let i = 0; i < _socialLinks.length; i++) {
-                await prisma.SocialLink.create({
-                    data: {
-                        name: _socialLinks[i]._name,
-                        url: _socialLinks[i]._url,
-                        userId: parseInt(req.query.id)
-                    }
-                })
-            }
-        }
+        
+        // console.log("social link", _socialLinks.length)
+        // if (_socialLinks.length > 0) {
+        //     for (let i = 0; i < _socialLinks.length; i++) {
+        //         await prisma.SocialLink.create({
+        //             data: {
+        //                 name: _socialLinks[i]._name,
+        //                 url: _socialLinks[i]._url,
+        //                 userId: parseInt(req.query.id)
+        //             }
+        //         })
+        //     }
+        // }
         if (userExist) {
             let _picture;
             if (req.file) {
