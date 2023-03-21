@@ -3,6 +3,7 @@ const {
     AWS_SECRET_ACCESS_KEY,
     AWS_ACCESS_KEY,
     AWS_REGION,
+    AWS_BUCKET_NAME
 } = require("../config/config");
 
 const config = {
@@ -14,7 +15,7 @@ let multer = require("multer");
 
 const s3 = new AWS.S3(config);
 
-const bucketName = process.env.AWS_BUCKET_NAME
+// const bucketName = process.env.AWS_BUCKET_NAME
 
 //Specify the multer config
 exports.upload = multer({
@@ -44,7 +45,7 @@ exports.upload = multer({
 exports.uploadToS3 = (fileData, fileName) => {
     return new Promise((resolve, reject) => {
         const params = {
-            Bucket: bucketName,
+            Bucket: AWS_BUCKET_NAME,
             Key: fileName,
             Body: fileData,
         };
