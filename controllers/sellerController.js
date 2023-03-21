@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 const validator = require("validator");
 const { OAuth2Client } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
-const HTTPError  = require("../utils/HTTPError.js");
+const HTTPError = require("../utils/HTTPError.js");
 const { HTTPResponse } = require("../utils/httpResponse.js");
 const {
     JWT_SECRET,
@@ -44,10 +44,13 @@ exports.createSeller = async (req, res) => {
                 return new HTTPError(res, 400, null, "internal server error")
             }
         } else {
+
             return new HTTPError(res, 404, null, "User not found")
         }
 
     } catch (err) {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 }
@@ -82,6 +85,8 @@ exports.updateSeller = async (req, res) => {
             return new HTTPError(res, 400, null, "internal server error")
         }
     } catch (err) {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 
@@ -106,6 +111,8 @@ exports.checkSellerDetails = async (req, res) => {
             return new HTTPError(res, 404, null, "seller not found")
         }
     } catch (err) {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 
@@ -139,6 +146,8 @@ exports.deleteSeller = async (req, res) => {
             return new HTTPError(res, 404, null, "seller not found")
         }
     } catch (err) {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 
@@ -158,6 +167,8 @@ exports.getAllMessages = async (req, res, next) => {
             return new HTTPError(res, 404, null, "seller not found")
         }
     } catch (err) {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 }

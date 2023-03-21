@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client')
 const validator = require("validator");
 const { OAuth2Client } = require("google-auth-library");
 // const jwt = require("jsonwebtoken");
-const HTTPError  = require("../utils/HTTPError.js");
+const HTTPError = require("../utils/HTTPError.js");
 const { HTTPResponse } = require("../utils/httpResponse.js");
 // const {
 //     JWT_SECRET,
@@ -51,6 +51,7 @@ exports.createUser = async (req, res) => {
         }
 
     } catch (err) {
+        console.log(err);
         return new HTTPError(res, 400, err, "internal server error") // bad payload error
     }
 
@@ -72,6 +73,7 @@ exports.loginUser = async (req, res) => {
             return new HTTPError(res, 404, null, "Email already exists")
         }
     } catch (err) {
+        console.log(err);
         return new HTTPError(res, 400, err, "internal server error")
     }
 }
@@ -130,6 +132,8 @@ exports.updateUser = async (req, res) => {
             return new HTTPError(res, 404, null, "Email does not exists")
         }
     } catch (err) {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 }
@@ -151,6 +155,8 @@ exports.checkUserDetails = async (req, res) => {
             return res.status(404).send("User does not exist")
         }
     } catch (err) {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 }
@@ -178,6 +184,8 @@ exports.deleteuser = async (req, res) => {
         }
 
     } catch (err) {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 
@@ -210,6 +218,8 @@ exports.userBookmarkProperty = async (req, res) => {
 
 
     } catch (err) {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 }
@@ -248,6 +258,8 @@ exports.userUnBookmarkProperty = async (req, res) => {
 
 
     } catch (err) {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 }
@@ -299,6 +311,8 @@ exports.sendMessageToSeller = async (req, res) => {
         }
 
     } catch (err) {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 }

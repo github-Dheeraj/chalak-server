@@ -71,6 +71,8 @@ exports.createProperty = async (req, res) => {
             return new HTTPError(res, 404, null, "Seller not initialized")
         }
     } catch {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 
@@ -146,6 +148,8 @@ exports.updateProperty = async (req, res, next) => {
             }
         }
     } catch (err) {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 
@@ -164,6 +168,8 @@ exports.deleteProperty = async (req, res, next) => {
             return new HTTPError(res, 400, null, "internal server error")
         }
     } catch {
+        console.log(err);
+
         return new HTTPError(res, 400, err, "internal server error")
     }
 
