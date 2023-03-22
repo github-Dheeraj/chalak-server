@@ -29,7 +29,6 @@ exports.createProperty = async (req, res) => {
 
         let ObjUrls = []
         if (sellerData) {
-            console.log("length", req.files.length)
             if (req.files && req.files.length > 0) {
                 for (var i = 0; i < req.files.length; i++) {
                     // console.log(req.files[i]);
@@ -68,7 +67,7 @@ exports.createProperty = async (req, res) => {
         } else {
             return new HTTPError(res, 404, null, "Seller not initialized")
         }
-    } catch (err){
+    } catch (err) {
         console.log(err);
 
         return new HTTPError(res, 400, err, "internal server error")
@@ -102,7 +101,6 @@ exports.updateProperty = async (req, res, next) => {
         console.log("sellerData", sellerData)
         let ObjUrls = []
         if (sellerData) {
-            console.log("length", req.files.length)
             if (req.files && req.files.length > 0) {
                 for (var i = 0; i < req.files.length; i++) {
                     // console.log(req.files[i]);
@@ -165,7 +163,7 @@ exports.deleteProperty = async (req, res, next) => {
         } else {
             return new HTTPError(res, 400, null, "Property not found")
         }
-    } catch (err){
+    } catch (err) {
         console.log(err);
 
         return new HTTPError(res, 400, err, "internal server error")
