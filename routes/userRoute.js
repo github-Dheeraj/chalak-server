@@ -14,7 +14,7 @@ const HTTPError = require("../utils/HTTPError");
 const { HTTPResponse } = require("../utils/httpResponse");
 
 router.route("/create").post(upload.single("image"), createUser)
-router.route("/login").post(loginUser)
+router.route("/login").get(loginUser)
 
 router.route("/delete").get(deleteuser)
 router.route("/update").post(upload.single("image"), updateUser)
