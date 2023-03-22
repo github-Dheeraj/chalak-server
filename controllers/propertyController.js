@@ -19,7 +19,6 @@ exports.createProperty = async (req, res) => {
             _balcony,    //Int?
             _furnishing, //Furnish?
         } = req.body
-        console.log("body", req.body)
         console.log("user Id", req.query.id)
         let sellerData = await prisma.Seller.findUnique(({
             where: {
@@ -41,7 +40,6 @@ exports.createProperty = async (req, res) => {
             }
 
             console.log("seller data", sellerData)
-            console.log("url obj", ObjUrls)
             let property = await prisma.Property.create({
                 data: {
                     sellerId: sellerData.id,
@@ -70,7 +68,7 @@ exports.createProperty = async (req, res) => {
         } else {
             return new HTTPError(res, 404, null, "Seller not initialized")
         }
-    } catch {
+    } catch (err){
         console.log(err);
 
         return new HTTPError(res, 400, err, "internal server error")
@@ -95,7 +93,6 @@ exports.updateProperty = async (req, res, next) => {
             _balcony,    //Int?
             _furnishing, //Furnish?
         } = req.body
-        console.log("body", req.body)
         console.log("files", req.files)
         let sellerData = await prisma.Seller.findUniqueOrThrow(({
             where: {
@@ -116,7 +113,6 @@ exports.updateProperty = async (req, res, next) => {
             }
 
             console.log("seller data", sellerData)
-            console.log("url obj", ObjUrls)
             let property = await prisma.Property.update({
                 where: {
                     id: parseInt(_propertyId),
@@ -146,6 +142,8 @@ exports.updateProperty = async (req, res, next) => {
             } else {
                 return new HTTPError(res, 400, null, "internal server error")
             }
+        } else {
+            return new HTTPError(res, 400, null, "Seller not found")
         }
     } catch (err) {
         console.log(err);
@@ -165,9 +163,9 @@ exports.deleteProperty = async (req, res, next) => {
             return new HTTPResponse(res, true, 200, null, null, { deleteDB });
 
         } else {
-            return new HTTPError(res, 400, null, "internal server error")
+            return new HTTPError(res, 400, null, "Property not found")
         }
-    } catch {
+    } catch (err){
         console.log(err);
 
         return new HTTPError(res, 400, err, "internal server error")
