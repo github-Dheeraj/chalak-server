@@ -16,7 +16,6 @@ require('dotenv').config();
 //Comment this will not be used until login flow with Email and Password is Done
 exports.createSeller = async (req, res) => {
     console.log("createSeller")
-    console.log("req body", req.body)
     try {
         let { _businessId, _tags } = req.body
         let userData = await prisma.User.findUnique({
@@ -60,8 +59,7 @@ exports.createSeller = async (req, res) => {
 exports.updateSeller = async (req, res) => {
     try {
         console.log('updateSeller')
-        console.log("req body: ", req.body)
-
+        let { _businessId, _tags } = req.body
         let sellerData = await prisma.Seller.findFirstOrThrow({
             where: {
                 userId: parseInt(req.query.id)
@@ -127,23 +125,23 @@ exports.deleteSeller = async (req, res) => {
                 userId: parseInt(req.query.id)
             }
         })
-        console.log("delete users", deleteUsers)
+
         if (user) {
 
-            const usersDelete = await prisma.Seller.findUnique({
+            const usersDelete = await prisma.Seller.delete({
                 where: {
                     userId: user.id
                 }
             })
             if (usersDelete) {
                 console.log("this is a db res");
-                return new HTTPResponse(res, true, 200, null, null, { deleteUsers });
+                return new HTTPResponse(res, true, 200, null, null, { usersDelete });
             } else {
                 return res.status(404).send("Seller not found")
             }
 
         } else {
-            return new HTTPError(res, 404, null, "seller not found")
+            return new HTTPError(res, 404, null, "Seller not found")
         }
     } catch (err) {
         console.log(err);
@@ -161,7 +159,7 @@ exports.getAllMessages = async (req, res, next) => {
         })
         if (getSeller) {
             console.log("this is a db res");
-            return res.status(200).send(getSeller.messagesRecieved);
+            return res.status(200).send({ data: getSeller.messagesRecieved });
 
         } else {
             return new HTTPError(res, 404, null, "seller not found")
