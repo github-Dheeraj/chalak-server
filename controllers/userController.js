@@ -22,6 +22,7 @@ exports.createUser = async (req, res) => {
         let {
             _name,
             _email,
+            _pictureUrl,
             _googleId
         } = req.body
         let userExist = await prisma.User.findUnique({
