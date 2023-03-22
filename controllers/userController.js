@@ -68,7 +68,7 @@ exports.loginUser = async (req, res) => {
         if (userExist) {
             return new HTTPResponse(res, true, 200, null, null, { userExist })
         } else {
-            return new HTTPError(res, 404, null, "Email already exists")
+            return new HTTPError(res, 404, null, "Email does not exist")
         }
     } catch (err) {
         console.log(err);
