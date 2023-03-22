@@ -19,16 +19,20 @@ const { messageUser } = require("../utils/whatsApp")
 exports.createUser = async (req, res) => {
     console.log("req body ", req.body)
     try {
+        let {
+            _name,
+            _email,
+            _googleId
+        } = req.body
         let userExist = await prisma.User.findUnique({
             where: {
-                email: req.body._email
+                email: req.body._email,
+                googleId: req.body._googleId
             }
         })
         console.log("user", userExist)
 
         if (!userExist) {
-
-
             let user = await prisma.User.create({
                 data: {
                     name: _name,
@@ -58,7 +62,8 @@ exports.loginUser = async (req, res) => {
     try {
         let userExist = await prisma.User.findUnique({
             where: {
-                email: req.body.email
+                email: req.body._email,
+                googleId: req.body._googleId
             }
         })
         if (userExist) {
@@ -87,7 +92,7 @@ exports.updateUser = async (req, res) => {
             },
         })
         console.log("user Exixts", userExist)
-        
+
         // console.log("social link", _socialLinks.length)
         // if (_socialLinks.length > 0) {
         //     for (let i = 0; i < _socialLinks.length; i++) {

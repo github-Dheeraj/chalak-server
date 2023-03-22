@@ -43,7 +43,7 @@ model User {
   phone               String?               @unique
   email               String                @unique
   createdAt           DateTime              @default(now())
-  googleId            String?               @unique
+  googleId            String                @unique
   picture             String?
   intrestedProperties IntrestedProperties[]
   sentMessages        Message[]

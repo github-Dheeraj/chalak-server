@@ -54,8 +54,8 @@ exports.createProperty = async (req, res) => {
                     floorNum: parseInt(_floorNum),
                     floorArea: parseInt(_floorArea),
                     balcony: parseInt(_balcony),
-                    parking: true,
-                    furnishing: 'FULLY',
+                    parking: _parking,
+                    furnishing: _furnishing,
                     mediaUrls: ObjUrls
                 }
             })
@@ -131,8 +131,8 @@ exports.updateProperty = async (req, res, next) => {
                     floorNum: parseInt(_floorNum),
                     floorArea: parseInt(_floorArea),
                     balcony: parseInt(_balcony),
-                    parking: true,
-                    furnishing: 'FULLY',
+                    parking: _parking,
+                    furnishing: _furnishing,
                     mediaUrls: {
                         push: ObjUrls
                     }
