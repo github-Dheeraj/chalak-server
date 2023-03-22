@@ -37,8 +37,7 @@ exports.createProperty = async (req, res) => {
                     ObjUrls.push(objUrl.Location);
                 }
             }
-
-            console.log("seller data", sellerData)
+            console.log("seller Id", sellerData.id)
             let property = await prisma.Property.create({
                 data: {
                     sellerId: sellerData.id,
