@@ -26,8 +26,7 @@ exports.createUser = async (req, res) => {
         } = req.body
         let userExist = await prisma.User.findUnique({
             where: {
-                email: req.body._email,
-                googleId: req.body._googleId
+                email: req.body._email
             }
         })
         console.log("user", userExist)
@@ -62,8 +61,7 @@ exports.loginUser = async (req, res) => {
     try {
         let userExist = await prisma.User.findUnique({
             where: {
-                email: req.body._email,
-                googleId: req.body._googleId
+                email: req.body._email
             }
         })
         if (userExist) {
