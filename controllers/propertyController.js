@@ -40,7 +40,7 @@ exports.createProperty = async (req, res) => {
             console.log("seller Id", sellerData.id)
             let property = await prisma.Property.create({
                 data: {
-                    sellerId: sellerData.id,
+                    sellerId: parseInt(sellerData.id),
                     title: _title,
                     address: _address,
                     cost: parseInt(_cost),
@@ -133,7 +133,7 @@ exports.updateProperty = async (req, res, next) => {
             })
 
             if (property) {
-                console.log("this is a db res");
+                console.log("Property updated");
                 return new HTTPResponse(res, true, 200, null, null, { property });
 
             } else {
@@ -150,13 +150,32 @@ exports.updateProperty = async (req, res, next) => {
 
 }
 
+exports.getPropertyDetails = async (req, res, next) => {
+    try {
+        let property = await prisma.Property.findUnique({
+            where: { id: parseint(req.query.id) }
+        })
+        if (property) {
+            console.log("property found");
+            return new HTTPResponse(res, true, 200, null, null, { property });
+
+        } else {
+            return new HTTPError(res, 400, null, "Property not found")
+        }
+    } catch (err) {
+        console.log(err);
+
+        return new HTTPError(res, 400, err, "internal server error")
+    }
+}
+
 exports.deleteProperty = async (req, res, next) => {
     try {
         let deleteDB = await prisma.Property.delete({
             where: { id: parseint(req.query.id) }
         })
         if (deleteDB) {
-            console.log("this is a db res");
+            console.log("Property deleted");
             return new HTTPResponse(res, true, 200, null, null, { deleteDB });
 
         } else {

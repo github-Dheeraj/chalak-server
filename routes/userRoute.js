@@ -6,6 +6,7 @@ const { createUser,
     userBookmarkProperty,
     userUnBookmarkProperty,
     loginWithPhone,
+    checkUserDetails,
     sendMessageToSeller,
     loginUser
 } = require("../controllers/userController")
@@ -14,13 +15,14 @@ const HTTPError = require("../utils/HTTPError");
 const { HTTPResponse } = require("../utils/httpResponse");
 
 router.route("/create").post(upload.single("image"), createUser)
-router.route("/login").get(loginUser)
+router.route("/login").post(loginUser)
 
-router.route("/delete").get(deleteuser)
+router.route("/delete").post(deleteuser)
 router.route("/update").post(upload.single("image"), updateUser)
+router.route("/getDetail").get(checkUserDetails)
 
-router.route("/bookmarkProperty").get(userBookmarkProperty)
-router.route("/unBookmarkProperty").get(userUnBookmarkProperty)
+router.route("/bookmarkProperty").post(userBookmarkProperty)
+router.route("/unBookmarkProperty").post(userUnBookmarkProperty)
 router.route("/sendMessage").post(sendMessageToSeller)
 
 module.exports = router

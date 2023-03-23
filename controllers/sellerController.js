@@ -120,9 +120,10 @@ exports.deleteSeller = async (req, res) => {
     console.log("delete users")
 
     try {
+        let { _email } = req.body._email
         const user = await prisma.Seller.findUnique({
             where: {
-                userId: parseInt(req.query.id)
+                userId: _email
             }
         })
 

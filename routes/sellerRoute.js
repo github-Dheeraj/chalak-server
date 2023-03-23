@@ -7,7 +7,7 @@ const { createSeller, deleteSeller, updateSeller, getAllMessages, checkSellerDet
 router.route("/create").post(createSeller)
 // router.route("/phoneLogmin").post(loginWithPhone)
 
-router.route("/delete").get(deleteSeller)
+router.route("/delete").post(deleteSeller)
 router.route("/update").post(updateSeller)
 
 router.route("/check").get(checkSellerDetails)

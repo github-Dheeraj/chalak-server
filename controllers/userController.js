@@ -137,9 +137,10 @@ exports.updateUser = async (req, res) => {
 exports.checkUserDetails = async (req, res) => {
     try {
         // ... you will write your Prisma Client queries here
+        let { _email } = req.body._email
         const userDetail = await prisma.User.findUnique({
             where: {
-                id: parseInt(req.query.id)
+                id: _email
             },
         })
 
@@ -159,10 +160,10 @@ exports.checkUserDetails = async (req, res) => {
 
 exports.deleteuser = async (req, res) => {
     try {
-
+        let { _email } = req.body._email
         const userDetail = await prisma.User.findUnique({
             where: {
-                id: parseInt(req.query.id)
+                email: _email
             },
         })
 
@@ -170,7 +171,7 @@ exports.deleteuser = async (req, res) => {
 
             const deleteUsers = await prisma.User.delete({
                 where: {
-                    id: parseInt(req.query.id)
+                    email: _email
                 },
             })
             console.log("User deleted");
