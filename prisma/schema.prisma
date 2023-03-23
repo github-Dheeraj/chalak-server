@@ -25,6 +25,7 @@ model Property {
   floorArea           Int?
   IntrestedProperties IntrestedProperties[]
   seller              Seller                @relation(fields: [sellerId], references: [id])
+  isActive            Boolean               @default(true)
 }
 
 model Seller {

@@ -140,7 +140,7 @@ exports.checkUserDetails = async (req, res) => {
 
         const userDetail = await prisma.User.findUnique({
             where: {
-                id: req.body._email
+                email: req.body._email
             },
         })
 
@@ -188,6 +188,10 @@ exports.deleteuser = async (req, res) => {
 
 }
 
+
+
+
+//need to change the bookmark Commeent
 //check if user has listed the property  before adding it to bookmark
 exports.userBookmarkProperty = async (req, res) => {
     try {
@@ -221,6 +225,8 @@ exports.userBookmarkProperty = async (req, res) => {
     }
 }
 
+
+//comment , need to change the api
 exports.userUnBookmarkProperty = async (req, res) => {
     try {
         console.log("req body", req.body)
