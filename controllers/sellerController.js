@@ -232,8 +232,6 @@ exports.getActiveProperty = async (req, res, next) => {
             })
             if (getSeller) {
 
-
-
                 const activeProperties = await prisma.Property.findUnique({
                     where: {
                         sellerId: getSeller.id,
@@ -241,7 +239,7 @@ exports.getActiveProperty = async (req, res, next) => {
                     }
                 })
 
-                console.log("this is a db res");
+                console.log("Properties found");
                 return new HTTPResponse(res, true, 200, null, null, { activeProperties })
 
             } else {

@@ -141,7 +141,7 @@ exports.checkUserDetails = async (req, res) => {
         const userDetail = await prisma.User.findUnique({
             where: {
                 email: req.body._email
-            },
+            }
         })
 
         if (userDetail) {
@@ -149,7 +149,7 @@ exports.checkUserDetails = async (req, res) => {
             return new HTTPResponse(res, true, 200, null, null, { userDetail })
 
         } else {
-            return res.status(404).send("User does not exist")
+            return new HTTPError(res, 400, null, "User does not exist")
         }
     } catch (err) {
         console.log(err);
