@@ -137,10 +137,10 @@ exports.updateUser = async (req, res) => {
 exports.checkUserDetails = async (req, res) => {
     try {
         // ... you will write your Prisma Client queries here
-        let { _email } = req.body._email
+
         const userDetail = await prisma.User.findUnique({
             where: {
-                id: _email
+                id: req.body._email
             },
         })
 
@@ -160,10 +160,10 @@ exports.checkUserDetails = async (req, res) => {
 
 exports.deleteuser = async (req, res) => {
     try {
-        let { _email } = req.body._email
+
         const userDetail = await prisma.User.findUnique({
             where: {
-                email: _email
+                email: req.body._email
             },
         })
 
