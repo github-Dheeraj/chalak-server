@@ -87,7 +87,7 @@ exports.updateUser = async (req, res) => {
         console.log("body", req.body)
         let userExist = await prisma.User.findUnique({
             where: {
-                id: parseInt(req.query.id)
+                email: req.body._email
             },
         })
         console.log("user Exixts", userExist)
@@ -106,6 +106,7 @@ exports.updateUser = async (req, res) => {
         // }
         if (userExist) {
             let _picture;
+            console.log("Filess", req.file)
             if (req.file) {
                 let obj = await uploadToS3(req.file.buffer, req.file.originalname);
                 _picture = obj.Location
