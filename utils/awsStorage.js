@@ -9,8 +9,8 @@ const {
 } = require("../config/config");
 
 AWS.config.update({
-    accessKeyId: AWS_ACCESS_KEY,
-    secretAccessKey: AWS_SECRET_ACCESS_KEY,
+    accessKeyId: AWS_ACCESS_VERCEL,
+    secretAccessKey: AWS_SECRET_ACCESS_KEY_VERCEL,
     region: AWS_REGION
 });
 
