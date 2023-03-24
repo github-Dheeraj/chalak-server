@@ -27,5 +27,12 @@ module.exports = {
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || "",
     AWS_REGION: process.env.AWS_REGION || "",
 
-    AWS_BUCKET_NAME: "listableawsbucket"
+
+
+    AWS_ACCESS_VERCEL: "AKIASVZKZRNBKE72YAHU",
+    AWS_SECRET_ACCESS_KEY_VERCEL: "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",
+
+    AWS_BUCKET_NAME: "listableawsbucket",
+
+    AWS_SDK_LOAD_CONFIG: 1
 };

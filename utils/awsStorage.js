@@ -60,8 +60,7 @@ exports.uploadToS3 = (fileData, fileName) => {
         const params = {
             Bucket: AWS_BUCKET_NAME,
             Key: fileName,
-            Body: fileData,
-            ACL: 'public-read'
+            Body: fileData
         };
         s3.upload(params, (err, data) => {
             if (err) {
