@@ -3,7 +3,9 @@ const {
     AWS_SECRET_ACCESS_KEY,
     AWS_ACCESS_KEY,
     AWS_REGION,
-    AWS_BUCKET_NAME
+    AWS_BUCKET_NAME,
+    AWS_ACCESS_VERCEL,
+    AWS_SECRET_ACCESS_KEY_VERCEL
 } = require("../config/config");
 
 AWS.config.update({
@@ -14,12 +16,22 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 let multer = require("multer");
-
+let multerS3 = require("multer-s3")
 // const bucketName = process.env.AWS_BUCKET_NAME
 
 //Specify the multer config
 exports.upload = multer({
-    // storage: multer.memoryStorage(),
+    // storage: multerS3({
+    //     s3: s3,
+    //     acl: 'public-read',
+    //     bucket: AWS_BUCKET_NAME,
+    //     metadata: function (req, file, cb) {
+    //         cb(null, { fieldName: file.fieldname });
+    //     },
+    //     key: function (req, file, cb) {
+    //         cb(null, Date.now().toString())
+    //     }
+    // }),
     limits: {
         fileSize: 1024 * 1024 * 5,
     },
