@@ -1,7 +1,6 @@
 
 
 require('dotenv').config();
-const fileUpload = require("express-fileupload");
 const express = require('express')
 const cors = require('cors')
 const userRoute = require("./routes/userRoute")
@@ -27,7 +26,6 @@ app.use(
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(fileUpload());
 
 
 app.use("/user", userRoute)
