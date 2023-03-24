@@ -19,6 +19,11 @@ exports.createProperty = async (req, res) => {
             _balcony,    //Int?
             _furnishing, //Furnish?
         } = req.body
+        if (_parking.toLowerCase() === "true") {
+            _parking = true
+        } else {
+            _parking = false
+        }
 
         let userData = await prisma.User.findUnique({
             where: {
@@ -57,7 +62,7 @@ exports.createProperty = async (req, res) => {
                         floorNum: parseInt(_floorNum),
                         floorArea: parseInt(_floorArea),
                         balcony: parseInt(_balcony),
-                        parking: _parking,
+                        parking: Boolean(_parking),
                         furnishing: _furnishing,
                         mediaUrls: ObjUrls
                     }
