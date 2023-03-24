@@ -1,14 +1,14 @@
 
 
 require('dotenv').config();
-
+const fileUpload = require("express-fileupload");
 const express = require('express')
 const cors = require('cors')
 const userRoute = require("./routes/userRoute")
 const propertyRoute = require("./routes/propertyRoute")
 const sellerRoute = require("./routes/sellerRoute")
 const { signUp } = require('./utils/whatsApp');
-
+const cookieParser = require("cookie-parser");
 const HTTPError = require("./utils/HTTPError");
 const { HTTPResponse } = require("./utils/httpResponse.js");
 const app = express()
@@ -17,12 +17,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // BASIC SERVER CONFIGS
+// BASIC SERVER CONFIGS
 app.use(
     cors({
         origin: true,
         credentials: true,
     })
 );
+app.use(express.json({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(fileUpload());
 
 
 app.use("/user", userRoute)

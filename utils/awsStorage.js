@@ -49,6 +49,7 @@ exports.uploadToS3 = (fileData, fileName) => {
             Bucket: AWS_BUCKET_NAME,
             Key: fileName,
             Body: fileData,
+            ACL: 'public-read'
         };
         s3.upload(params, (err, data) => {
             if (err) {
