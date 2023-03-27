@@ -17,7 +17,8 @@ exports.createProperty = async (req, res) => {
             _floorArea,
             _parking,    //Boolean?
             _balcony,    //Int?
-            _furnishing, //Furnish?
+            _furnish, //Furnish?
+            _furnishings //String[]
         } = req.body
         if (_parking.toLowerCase() === "true") {
             _parking = true
@@ -63,7 +64,8 @@ exports.createProperty = async (req, res) => {
                         floorArea: parseInt(_floorArea),
                         balcony: parseInt(_balcony),
                         parking: Boolean(_parking),
-                        furnishing: _furnishing,
+                        furnish: _furnish,
+                        furnishings: _furnishings,
                         mediaUrls: ObjUrls
                     }
                 })
@@ -105,7 +107,8 @@ exports.updateProperty = async (req, res, next) => {
             _floorArea,
             _parking,    //Boolean?
             _balcony,    //Int?
-            _furnishing, //Furnish?
+            _furnish, //Furnish?
+            _furnishings, //String[]
             _isActive
         } = req.body
         console.log("files", req.files)
@@ -115,7 +118,7 @@ exports.updateProperty = async (req, res, next) => {
         if (_isActive.toLowerCase() === "true") { _isActive = true } else {
             _parking = false
         }
-        
+
         let sellerData = await prisma.Seller.findUniqueOrThrow(({
             where: {
                 userId: parseInt(req.query.id)
@@ -149,7 +152,8 @@ exports.updateProperty = async (req, res, next) => {
                     floorArea: parseInt(_floorArea),
                     balcony: parseInt(_balcony),
                     parking: _parking,
-                    furnishing: _furnishing,
+                    furnish: _furnish,
+                    furnishings: _furnishings,
                     mediaUrls: {
                         push: ObjUrls
                     }
