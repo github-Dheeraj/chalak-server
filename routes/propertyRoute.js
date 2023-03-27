@@ -12,4 +12,7 @@ router.route("/create").post(upload.array("images", 15), createProperty)
 router.route("/update").post(upload.array("images", 15), updateProperty)
 router.route("/getDetail").get(getPropertyDetails)
 router.route("/delete").post(deleteProperty)
+router.get('/', function (req, res) {
+    res.send('Welcome to our API!');
+});
 module.exports = router

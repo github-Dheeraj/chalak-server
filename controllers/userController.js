@@ -172,7 +172,7 @@ exports.deleteuser = async (req, res) => {
 
             const deleteUsers = await prisma.User.delete({
                 where: {
-                    email: _email
+                    email: req.body._email
                 },
             })
             console.log("User deleted");

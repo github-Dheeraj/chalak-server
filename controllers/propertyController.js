@@ -106,8 +106,16 @@ exports.updateProperty = async (req, res, next) => {
             _parking,    //Boolean?
             _balcony,    //Int?
             _furnishing, //Furnish?
+            _isActive
         } = req.body
         console.log("files", req.files)
+        if (_parking.toLowerCase() === "true") { _parking = true } else {
+            _parking = false
+        }
+        if (_isActive.toLowerCase() === "true") { _isActive = true } else {
+            _parking = false
+        }
+        
         let sellerData = await prisma.Seller.findUniqueOrThrow(({
             where: {
                 userId: parseInt(req.query.id)

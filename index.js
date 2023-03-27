@@ -11,6 +11,7 @@ const cookieParser = require("cookie-parser");
 const HTTPError = require("./utils/HTTPError");
 const { HTTPResponse } = require("./utils/httpResponse.js");
 const app = express()
+var subdomain = require('express-subdomain');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,8 +28,7 @@ app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
-app.use("/user", userRoute)
+app.use(subdomain('user', userRoute))
 
 app.use("/property", propertyRoute)
 
