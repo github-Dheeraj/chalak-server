@@ -23,7 +23,9 @@ exports.createUser = async (req, res) => {
             _name,
             _email,
             _pictureUrl,
-            _googleId
+            _googleId,
+            _businessId,
+            _tags
         } = req.body
         let userExist = await prisma.User.findUnique({
             where: {
@@ -41,7 +43,18 @@ exports.createUser = async (req, res) => {
                     googleId: _googleId,
                 }
             })
+
+            let seller = await prisma.Seller.create({
+                data: {
+                    userId: user.id,
+                    businessId: _businessId,
+                    tags: _tags
+
+                }
+            })
             console.log("User created");
+            console.log("Seller created");
+
             return new HTTPResponse(res, true, 200, null, null, { user })
 
         } else {
@@ -167,15 +180,24 @@ exports.deleteuser = async (req, res) => {
                 email: req.body._email
             },
         })
-
+        console.log(userDetail)
         if (userDetail) {
 
+            //remove this in v2
+            const sellerDelete = await prisma.Seller.delete({
+                where: {
+                    userId: userDetail.id
+                }
+            })
             const deleteUsers = await prisma.User.delete({
                 where: {
                     email: req.body._email
                 },
             })
+
+
             console.log("User deleted");
+            console.log("Seller deleted");
             return new HTTPResponse(res, true, 200, null, null, { deleteUsers })
         } else {
             return new HTTPError(res, 404, null, "User does not exists")
