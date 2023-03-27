@@ -28,7 +28,7 @@ app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(subdomain('user', userRoute))
+app.use('user', userRoute)
 
 app.use("/property", propertyRoute)
 
