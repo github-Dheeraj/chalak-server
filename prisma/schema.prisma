@@ -19,7 +19,8 @@ model Property {
   floorNum            Int?
   parking             Boolean?              @default(true)
   balcony             Int?
-  furnishing          Furnish?
+  furnish             Furnish?
+  furnishings         String[]
   mediaUrls           String[]
   listedAt            DateTime              @default(now())
   floorArea           Int?
