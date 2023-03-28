@@ -19,14 +19,14 @@ model Property {
   floorNum            Int?
   parking             Boolean?              @default(true)
   balcony             Int?
-  furnish             Furnish?
-  furnishings         String[]
   mediaUrls           String[]
   listedAt            DateTime              @default(now())
   floorArea           Int?
+  isActive            Boolean               @default(true)
+  furnish             Furnish?
+  furnishings         String[]
   IntrestedProperties IntrestedProperties[]
   seller              Seller                @relation(fields: [sellerId], references: [id])
-  isActive            Boolean               @default(true)
 }
 
 model Seller {

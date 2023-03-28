@@ -17,9 +17,10 @@ exports.createProperty = async (req, res) => {
             _floorArea,
             _parking,    //Boolean?
             _balcony,    //Int?
-            _furnish, //Furnish?
-            _furnishings //String[]
+            // _furnish, //Furnish?
+            // _furnishings //String[]
         } = req.body
+        console.log("body", req.body)
         if (_parking.toLowerCase() === "true") {
             _parking = true
         } else {
@@ -64,8 +65,8 @@ exports.createProperty = async (req, res) => {
                         floorArea: parseInt(_floorArea),
                         balcony: parseInt(_balcony),
                         parking: Boolean(_parking),
-                        furnish: _furnish,
-                        furnishings: _furnishings,
+                        // furnish: _furnish,
+                        // furnishings: _furnishings,
                         mediaUrls: ObjUrls
                     }
                 })
@@ -107,8 +108,8 @@ exports.updateProperty = async (req, res, next) => {
             _floorArea,
             _parking,    //Boolean?
             _balcony,    //Int?
-            _furnish, //Furnish?
-            _furnishings, //String[]
+            // _furnish, //Furnish?
+            // _furnishings, //String[]
             _isActive
         } = req.body
         console.log("files", req.files)
@@ -152,8 +153,8 @@ exports.updateProperty = async (req, res, next) => {
                     floorArea: parseInt(_floorArea),
                     balcony: parseInt(_balcony),
                     parking: _parking,
-                    furnish: _furnish,
-                    furnishings: _furnishings,
+                    // furnish: _furnish,
+                    // furnishings: _furnishings,
                     mediaUrls: {
                         push: ObjUrls
                     }
