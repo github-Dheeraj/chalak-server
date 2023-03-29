@@ -12,7 +12,7 @@ model Property {
   sellerId            Int
   title               String
   address             String?
-  cost                Int?
+  rent                Int?
   deposit             Int?
   bedrooms            Int?
   washRooms           Int?

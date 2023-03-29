@@ -9,7 +9,7 @@ exports.createProperty = async (req, res) => {
         let {
             _title,      //String
             _address,    //String?
-            _cost,       //Int?
+            _rent,       //Int?
             _deposit,    //Int?
             _bedrooms,   //Int?
             _washRooms,  //Int?
@@ -57,7 +57,7 @@ exports.createProperty = async (req, res) => {
                         sellerId: parseInt(sellerData.id),
                         title: _title,
                         address: _address,
-                        cost: parseInt(_cost),
+                        rent: parseInt(_rent),
                         deposit: parseInt(_deposit),
                         bedrooms: parseInt(_bedrooms),
                         washRooms: parseInt(_washRooms),

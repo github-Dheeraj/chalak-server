@@ -6,6 +6,7 @@ const cors = require('cors')
 const userRoute = require("./routes/userRoute")
 const propertyRoute = require("./routes/propertyRoute")
 const sellerRoute = require("./routes/sellerRoute")
+const adminRoute = require("./routes/adminRoute")
 const { signUp } = require('./utils/whatsApp');
 const cookieParser = require("cookie-parser");
 const HTTPError = require("./utils/HTTPError");
@@ -34,8 +35,9 @@ app.use("/property", propertyRoute)
 
 app.use("/seller", sellerRoute)
 
+app.use("/admin", adminRoute)
 
-app.get("/whatsApp", signUp)
+// app.get("/whatsApp", signUp)
 
 app.get("/", (req, res, next) => {
     try {

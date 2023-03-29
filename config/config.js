@@ -34,7 +34,9 @@ module.exports = {
 
     AWS_BUCKET_NAME: "listableawsbucket",
 
-    AWS_SDK_LOAD_CONFIG: 1
+    AWS_SDK_LOAD_CONFIG: 1,
+
+    WHATSAPP_AUTH: process.env.WHATSAPP_AUTH_KEY
 };
 
 
