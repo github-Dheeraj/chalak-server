@@ -250,7 +250,7 @@ exports.getPropertyDetails = async (req, res, next) => {
 exports.deleteProperty = async (req, res, next) => {
     try {
         let deleteDB = await prisma.Property.delete({
-            where: { id: parseint(req.query.id) }
+            where: { id: parseint(req.query._propertyId) }
         })
         if (deleteDB) {
             console.log("Property deleted");
