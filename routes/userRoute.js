@@ -23,8 +23,9 @@ router.route("/getDetail").get(checkUserDetails)
 
 router.route("/bookmarkProperty").post(userBookmarkProperty)
 router.route("/unBookmarkProperty").post(userUnBookmarkProperty)
-router.route("/sendMessage").post(sendMessageToSeller)
-router.get('/', function (req, res) {
-    res.send('Welcome to our API!');
-});
+
+// router.route("/sendMessage").post(sendMessageToSeller)
+// router.get('/', function (req, res) {
+//     res.send('Welcome to our API!');
+// });
 module.exports = router

@@ -64,15 +64,16 @@ model IntrestedProperties {
 
 model Message {
   id         Int      @id @default(autoincrement())
-  propertyId Int
-  userId     Int
-  name       String
+  propertyId Int?
+  name       String?
+  email      String?
   message    String?
-  sellerId   Int
   sendAt     DateTime @default(now())
-  phone      String
-  Seller     Seller   @relation(fields: [sellerId], references: [id])
-  User       User     @relation(fields: [userId], references: [id])
+  phone      String?
+  Seller     Seller?  @relation(fields: [sellerId], references: [id])
+  sellerId   Int?
+  User       User?    @relation(fields: [userId], references: [id])
+  userId     Int?
 }
 
 model SocialLink {

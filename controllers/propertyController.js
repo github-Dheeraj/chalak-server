@@ -267,11 +267,13 @@ exports.deleteProperty = async (req, res, next) => {
 
 }
 
+
+// _email query param
 exports.getPropertyListUser = async (req, res, next) => {
     try {
         let userExist = await prisma.User.findUnique({
             where: {
-                email: req.body._email
+                email: req.query._email
             },
         })
         if (userExist) {
@@ -305,6 +307,79 @@ exports.getPropertyListUser = async (req, res, next) => {
 
 
 
+exports.sendMessageToSeller = async (req, res) => {
+    try {
+        console.log("req body", req.body)
+        let {
+            _propertyId,
+            _name,
+            _phone,
+            _email,
+            _message } = req.body
+
+        let checkIfExist = await prisma.Property.findUnique({
+            where: {
+                id: _propertyId
+            }
+        })
+        console.log("check if exixst", checkIfExist)
+        if (checkIfExist) {
+
+            let newMessage = await prisma.Message.create({
+                data: {
+                    propertyId: _propertyId,
+                    name: _name,
+                    phone: _phone,
+                    email: _email,
+                    sellerId: checkIfExist.sellerId
+                }
+            })
+            //send whatsApp message to user
+            // messageUser(_phone, _message)  
+            return new HTTPResponse(res, true, 200, null, null, { newMessage })
+
+        } else {
+            return new HTTPError(res, 404, null, "Property not found")
+        }
+
+    } catch (err) {
+        console.log(err);
+
+        return new HTTPError(res, 400, err, "internal server error")
+    }
+}
+
+exports.getIntrestedMessages = async (req, res, next) => {
+    try {
+        console.log("req body", req.query)
+
+        let checkIfExist = await prisma.Property.findUnique({
+            where: {
+                id: parseInt(req.query._propertyId)
+            }
+        })
+        console.log("check if exixst", checkIfExist)
+        if (checkIfExist) {
+
+            let allMessages = await prisma.Message.findMany({
+                where: {
+                    propertyId: parseInt(req.query._propertyId)
+                }
+            })
+            //send whatsApp message to user
+            // messageUser(_phone, _message)  
+            return new HTTPResponse(res, true, 200, null, null, allMessages)
+
+        } else {
+            return new HTTPError(res, 404, null, "Property not found")
+        }
+
+    } catch (err) {
+        console.log(err);
+
+        return new HTTPError(res, 400, err, "internal server error")
+    }
+}
 
 
 

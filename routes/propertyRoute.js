@@ -3,7 +3,14 @@ const router = express.Router()
 const HTTPError = require("../utils/HTTPError");
 const { HTTPResponse } = require("../utils/httpResponse");
 const {
-    createProperty, updateProperty, deleteProperty, getPropertyDetails, getPropertyListUser, updatePropertyStatus
+    createProperty,
+    updateProperty,
+    deleteProperty,
+    getPropertyDetails,
+    getPropertyListUser,
+    updatePropertyStatus,
+    sendMessageToSeller,
+    getIntrestedMessages
 } = require("../controllers/propertyController")
 const { upload } = require("../utils/awsStorage")
 
@@ -17,6 +24,11 @@ router.route("/getDetail").get(getPropertyDetails)
 router.route("/delete").post(deleteProperty)
 
 router.route("/getProperties").get(getPropertyListUser)
+
+router.route("/sendMessage").post(sendMessageToSeller)
+
+router.route("/getMessages").get(getIntrestedMessages)
+
 router.get('/', function (req, res) {
     res.send('Welcome to our API!');
 });

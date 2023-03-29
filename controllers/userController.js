@@ -292,56 +292,56 @@ exports.userUnBookmarkProperty = async (req, res) => {
 
 
 
-exports.sendMessageToSeller = async (req, res) => {
-    try {
-        console.log("req body", req.body)
-        let { _propertyId,
-            _name,
-            _phone,
-            _message } = req.body
+// exports.sendMessageToSeller = async (req, res) => {
+//     try {
+//         console.log("req body", req.body)
+//         let { _propertyId,
+//             _name,
+//             _phone,
+//             _message } = req.body
 
-        let checkIfExist = await prisma.Property.findUnique({
-            where: {
-                id: _propertyId
-            }
-        })
-        console.log("check if exixst", checkIfExist)
-        if (checkIfExist) {
-            let checkUser = await prisma.User.findUnique({
-                where: {
-                    id: parseInt(req.query.id)
-                }
-            })
-            console.log("check user", checkUser)
-            if (checkUser) {
-                let newMessage = await prisma.Message.create({
-                    data: {
-                        propertyId: _propertyId,
-                        userId: parseInt(req.query.id),
-                        name: _name,
-                        phone: _phone,
-                        message: _message,
-                        sellerId: checkIfExist.sellerId
-                    }
-                })
-                //send whatsApp message to user
-                // messageUser(_phone, _message)  
-                return new HTTPResponse(res, true, 200, null, null, { newMessage })
+//         let checkIfExist = await prisma.Property.findUnique({
+//             where: {
+//                 id: _propertyId
+//             }
+//         })
+//         console.log("check if exixst", checkIfExist)
+//         if (checkIfExist) {
+//             let checkUser = await prisma.User.findUnique({
+//                 where: {
+//                     id: parseInt(req.query.id)
+//                 }
+//             })
+//             console.log("check user", checkUser)
+//             if (checkUser) {
+//                 let newMessage = await prisma.Message.create({
+//                     data: {
+//                         propertyId: _propertyId,
+//                         userId: parseInt(req.query.id),
+//                         name: _name,
+//                         phone: _phone,
+//                         message: _message,
+//                         sellerId: checkIfExist.sellerId
+//                     }
+//                 })
+//                 //send whatsApp message to user
+//                 // messageUser(_phone, _message)  
+//                 return new HTTPResponse(res, true, 200, null, null, { newMessage })
 
 
-            } else {
-                return new HTTPError(res, 404, null, "User not found")
-            }
-        } else {
-            return new HTTPError(res, 404, null, "Property not found")
-        }
+//             } else {
+//                 return new HTTPError(res, 404, null, "User not found")
+//             }
+//         } else {
+//             return new HTTPError(res, 404, null, "Property not found")
+//         }
 
-    } catch (err) {
-        console.log(err);
+//     } catch (err) {
+//         console.log(err);
 
-        return new HTTPError(res, 400, err, "internal server error")
-    }
-}
+//         return new HTTPError(res, 400, err, "internal server error")
+//     }
+// }
 
 
 
