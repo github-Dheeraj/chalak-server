@@ -216,7 +216,7 @@ exports.updatePropertyStatus = async (req, res) => {
                 return new HTTPResponse(res, true, 200, null, null, { property });
 
             } else {
-                return new HTTPError(res, 400, null, "internal server error")
+                return new HTTPError(res, 400, null, "Property not found")
             }
         } else {
             return new HTTPError(res, 400, null, "Seller not found")
