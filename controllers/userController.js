@@ -154,7 +154,7 @@ exports.checkUserDetails = async (req, res) => {
 
         const userDetail = await prisma.User.findUnique({
             where: {
-                email: req.body._email
+                email: req.query._email
             }
         })
 
