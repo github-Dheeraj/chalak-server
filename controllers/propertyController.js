@@ -291,7 +291,7 @@ exports.getPropertyListUser = async (req, res, next) => {
                         sellerId: sellerExist.id
                     }
                 })
-                return new HTTPResponse(res, true, 200, null, null, allProperty);
+                return new HTTPResponse(res, true, 200, null, null, { allProperty, length: allProperty.length });
 
             }
 
