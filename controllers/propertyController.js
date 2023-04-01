@@ -291,7 +291,8 @@ exports.getPropertyListUser = async (req, res, next) => {
                         sellerId: sellerExist.id
                     }
                 })
-                return new HTTPResponse(res, true, 200, null, null, { allProperty, length: allProperty.length });
+
+                return new HTTPResponse(res, true, 200, null, null, { allProperty });
 
             }
 
@@ -332,6 +333,15 @@ exports.sendMessageToSeller = async (req, res) => {
                     phone: _phone,
                     email: _email,
                     sellerId: checkIfExist.sellerId
+                }
+            })
+
+            await prisma.Property.update({
+                where: {
+                    id: _propertyId
+                },
+                data: {
+                    messagesRecieved: { increment: 1 }
                 }
             })
             //send whatsApp message to user

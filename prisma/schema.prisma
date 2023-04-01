@@ -25,6 +25,7 @@ model Property {
   isActive            Boolean               @default(true)
   furnish             Furnish?
   furnishings         String[]
+  messagesRecieved    Int?
   IntrestedProperties IntrestedProperties[]
   seller              Seller                @relation(fields: [sellerId], references: [id])
 }
