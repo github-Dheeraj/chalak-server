@@ -231,7 +231,7 @@ exports.updatePropertyStatus = async (req, res) => {
 exports.getPropertyDetails = async (req, res, next) => {
     try {
         let property = await prisma.Property.findUnique({
-            where: { id: parseint(req.query.id) }
+            where: { id: parseInt(req.query.id) }
         })
         if (property) {
             console.log("property found");
