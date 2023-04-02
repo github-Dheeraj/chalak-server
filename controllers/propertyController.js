@@ -340,10 +340,12 @@ exports.sendMessageToSeller = async (req, res) => {
                     id: _propertyId
                 },
                 data: {
-                    messagesRecieved: { increment: 1 }
+                    messagesRecieved: {
+                        increment: 1,
+                    },
                 }
             })
-
+            console.log("property", checkIfExist)
             //send whatsApp message to user
             // messageUser(_phone, _message)  
             return new HTTPResponse(res, true, 200, null, null, { newMessage })
