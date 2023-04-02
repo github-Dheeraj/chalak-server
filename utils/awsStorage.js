@@ -21,19 +21,8 @@ let multerS3 = require("multer-s3")
 
 //Specify the multer config
 exports.upload = multer({
-    // storage: multerS3({
-    //     s3: s3,
-    //     acl: 'public-read',
-    //     bucket: AWS_BUCKET_NAME,
-    //     metadata: function (req, file, cb) {
-    //         cb(null, { fieldName: file.fieldname });
-    //     },
-    //     key: function (req, file, cb) {
-    //         cb(null, Date.now().toString())
-    //     }
-    // }),
     limits: {
-        fileSize: 1024 * 1024 * 5,
+        fileSize: 1024 * 1024 * 1024,
     },
     fileFilter: function (req, file, done) {
         if (
