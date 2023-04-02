@@ -323,7 +323,6 @@ exports.sendMessageToSeller = async (req, res) => {
                 id: _propertyId
             }
         })
-        console.log("check if exixst", checkIfExist)
         if (checkIfExist) {
 
             let newMessage = await prisma.Message.create({
@@ -344,6 +343,7 @@ exports.sendMessageToSeller = async (req, res) => {
                     messagesRecieved: { increment: 1 }
                 }
             })
+
             //send whatsApp message to user
             // messageUser(_phone, _message)  
             return new HTTPResponse(res, true, 200, null, null, { newMessage })
