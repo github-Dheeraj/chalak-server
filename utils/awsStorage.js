@@ -43,12 +43,12 @@ exports.upload = multer({
 });
 
 //upload to s3
-exports.uploadToS3 = (fileData, fileName) => {
+exports.uploadToS3 = (fileData) => {
     console.log("bucket name: ", AWS_BUCKET_NAME)
     return new Promise((resolve, reject) => {
         const params = {
             Bucket: AWS_BUCKET_NAME,
-            Key: fileName,
+            Key: `${Date.now().toString()}.jpg`,
             Body: fileData
         };
         s3.upload(params, (err, data) => {
