@@ -39,15 +39,14 @@ exports.createProperty = async (req, res) => {
                     userId: userData.id
                 }
             }))
-            console.log("SellerData", sellerData)
-
+            console.log(req.files);
             let ObjUrls = []
             if (sellerData) {
                 if (req.files && req.files.length > 0) {
                     for (var i = 0; i < req.files.length; i++) {
-                        // console.log(req.files[i]);
+
                         let objUrl = await uploadToS3(req.files[i].buffer, req.files[i].originalname);
-                        console.log(" Aws url", objUrl.Location);
+                        console.log(" Aws url", objUrl);
                         ObjUrls.push(objUrl.Location);
                     }
                 }
