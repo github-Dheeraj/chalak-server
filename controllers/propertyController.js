@@ -305,6 +305,46 @@ exports.getPropertyListUser = async (req, res, next) => {
     }
 }
 
+// _email query param
+exports.getPropertyListUserId = async (req, res, next) => {
+    try {
+        let userExist = await prisma.User.findUnique({
+            where: {
+                id: parseInt(req.query._userId)
+            },
+        })
+        if (userExist) {
+            console.log("USer found");
+
+            let sellerExist = await prisma.Seller.findUnique({
+                where: {
+                    userId: userExist.id
+                },
+            })
+            console.log("Seller found", sellerExist)
+            if (sellerExist) {
+                let allProperty = await prisma.Property.findMany({
+                    where: {
+                        sellerId: sellerExist.id
+                    }
+                })
+
+                return new HTTPResponse(res, true, 200, null, null, { allProperty });
+
+            } else {
+                return new HTTPError(res, 400, null, "Seller not found")
+            }
+
+        } else {
+            return new HTTPError(res, 400, null, "Property not found")
+        }
+    } catch (err) {
+        console.log(err);
+
+        return new HTTPError(res, 400, err, "internal server error")
+    }
+}
+
 
 
 exports.sendMessageToSeller = async (req, res) => {
