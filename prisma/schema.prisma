@@ -25,7 +25,7 @@ model Property {
   isActive            Boolean               @default(true)
   furnish             Furnish?
   furnishings         String[]
-  messagesRecieved    Int?                  @default(0)
+  messagesReceived    Int?                  @default(0)
   IntrestedProperties IntrestedProperties[]
   seller              Seller                @relation(fields: [sellerId], references: [id])
 }
@@ -35,7 +35,7 @@ model Seller {
   businessId       String?    @unique
   tags             String[]
   userId           Int        @unique
-  messagesRecieved Message[]
+  messagesReceived Message[]
   Property         Property[]
   user             User       @relation(fields: [userId], references: [id])
 }
@@ -66,15 +66,15 @@ model IntrestedProperties {
 model Message {
   id         Int      @id @default(autoincrement())
   propertyId Int?
+  userId     Int?
   name       String?
-  email      String?
   message    String?
+  sellerId   Int?
   sendAt     DateTime @default(now())
   phone      String?
+  email      String?
   Seller     Seller?  @relation(fields: [sellerId], references: [id])
-  sellerId   Int?
   User       User?    @relation(fields: [userId], references: [id])
-  userId     Int?
 }
 
 model SocialLink {

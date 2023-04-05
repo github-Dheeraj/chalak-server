@@ -339,7 +339,7 @@ exports.sendMessageToSeller = async (req, res) => {
                     id: _propertyId
                 },
                 data: {
-                    messagesRecieved: {
+                    messagesReceived: {
                         increment: 1,
                     },
                 }
