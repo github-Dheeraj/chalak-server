@@ -85,6 +85,14 @@ model SocialLink {
   user   User   @relation(fields: [userId], references: [id])
 }
 
+model Connect {
+  id      String  @id @default(uuid())
+  name    String?
+  phone   String?
+  email   String?
+  message String?
+}
+
 enum Furnish {
   FULLY
   SEMI
