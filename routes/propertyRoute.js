@@ -11,7 +11,8 @@ const {
     updatePropertyStatus,
     sendMessageToSeller,
     getIntrestedMessages,
-    getPropertyListUserId
+    getPropertyListUserId,
+    getPropertyByPropertyId
 } = require("../controllers/propertyController")
 const { upload } = require("../utils/awsStorage")
 
@@ -30,7 +31,10 @@ router.route("/sendMessage").post(sendMessageToSeller)
 
 router.route("/getMessages").get(getIntrestedMessages)
 
-router.route("/getPage").get(getPropertyListUserId)
+router.route("/getPropUserId").get(getPropertyListUserId)
+
+
+router.route("/getPropertyById").get(getPropertyByPropertyId)
 
 router.get('/', function (req, res) {
     res.send('Welcome to our API!');
