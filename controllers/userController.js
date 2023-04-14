@@ -226,7 +226,7 @@ exports.userBookmarkProperty = async (req, res) => {
         if (propertyData) {
             let interest = await prisma.IntrestedProperties.create({
                 data: {
-                    userId: parseInt(req.query.id),
+                    userId: req.query.id,
                     propertyId: _propertyId
                 }
 
@@ -257,7 +257,7 @@ exports.userUnBookmarkProperty = async (req, res) => {
         let propertyData = await prisma.IntrestedProperties.findUnique({
             where: {
                 userId_propertyId: {
-                    userId: parseInt(req.query.id),
+                    userId: req.query.id,
                     propertyId: parseInt(_propertyId)
                 }
             }
@@ -267,7 +267,7 @@ exports.userUnBookmarkProperty = async (req, res) => {
             let unInterest = await prisma.IntrestedProperties.delete({
                 where: {
                     userId_propertyId: {
-                        userId: parseInt(req.query.id),
+                        userId: req.query.id,
                         propertyId: _propertyId
                     }
                 }

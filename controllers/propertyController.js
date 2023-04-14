@@ -310,7 +310,7 @@ exports.getPropertyListUserId = async (req, res, next) => {
     try {
         let userExist = await prisma.User.findUnique({
             where: {
-                id: parseInt(req.query._userId)
+                id: (req.query._userId)
             },
         })
         if (userExist) {
