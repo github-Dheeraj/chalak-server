@@ -310,7 +310,7 @@ exports.getPropertyListUserId = async (req, res, next) => {
     try {
         let userExist = await prisma.User.findUnique({
             where: {
-                id: (req.query._userId)
+                id: req.query._userId
             },
         })
         if (userExist) {
@@ -329,7 +329,7 @@ exports.getPropertyListUserId = async (req, res, next) => {
                     }
                 })
 
-                return new HTTPResponse(res, true, 200, null, null, { allProperty });
+                return new HTTPResponse(res, true, 200, null, null, { allProperty, userExist });
 
             } else {
                 return new HTTPError(res, 400, null, "Seller not found")
