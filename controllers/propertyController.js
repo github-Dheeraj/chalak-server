@@ -381,8 +381,7 @@ exports.sendMessageToSeller = async (req, res) => {
             _propertyId,
             _name,
             _phone,
-            _email,
-            _message } = req.body
+            _email } = req.body
 
         let checkIfExist = await prisma.Property.findUnique({
             where: {
