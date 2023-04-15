@@ -329,7 +329,7 @@ exports.getPropertyListUserId = async (req, res, next) => {
                     }
                 })
 
-                return new HTTPResponse(res, true, 200, null, null, { allProperty, userExist });
+                return new HTTPResponse(res, true, 200, null, null, { allProperty, "userDetails": userExist });
 
             } else {
                 return new HTTPError(res, 400, null, "Seller not found")
