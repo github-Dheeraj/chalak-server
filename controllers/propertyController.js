@@ -53,7 +53,7 @@ exports.createProperty = async (req, res) => {
                 console.log("seller Id", sellerData.id)
                 let property = await prisma.Property.create({
                     data: {
-                        sellerId: parseInt(sellerData.id),
+                        sellerId: sellerData.id,
                         title: _title,
                         address: _address,
                         rent: parseInt(_rent),
